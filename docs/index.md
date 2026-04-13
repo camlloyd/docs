@@ -1,11 +1,11 @@
 ---
 title: ClawBio Documentation
-description: Technical documentation, tutorials, skill reference, and research projects for ClawBio, the bioinformatics-native AI agent skill library.
+description: Technical documentation, tutorials, and skill reference for ClawBio, the bioinformatics-native AI agent skill library.
 ---
 
 <div class="hero">
   <h1 class="hero__title">ClawBio Documentation</h1>
-  <p class="hero__subtitle">Technical docs, tutorials, and research for the bioinformatics AI skill library</p>
+  <p class="hero__subtitle">Technical docs, tutorials, and presentations for the bioinformatics AI skill library</p>
   <p>
     <a href="https://clawbio.ai" class="md-button md-button--primary">ClawBio Home</a>
     &nbsp;
@@ -52,12 +52,12 @@ description: Technical documentation, tutorials, skill reference, and research p
   <p class="tutorial-card__desc">Browse all available skills: pharmacogenomics, GWAS, scRNA-seq, equity scoring, and more.</p>
 </a>
 
-<a class="tutorial-card" href="research/">
+<a class="tutorial-card" href="presentations/">
   <div class="tutorial-card__header">
-    <span class="difficulty-badge difficulty-badge--event">Research</span>
+    <span class="difficulty-badge difficulty-badge--event">Slides</span>
   </div>
-  <h3 class="tutorial-card__title">Research Projects</h3>
-  <p class="tutorial-card__desc">Active research built on ClawBio: Genomebook, HEIM, and more.</p>
+  <h3 class="tutorial-card__title">Presentations</h3>
+  <p class="tutorial-card__desc">All ClawBio talks, workshops, and pitch decks in one place, newest first.</p>
 </a>
 
 <a class="tutorial-card" href="deployment/">
@@ -100,4 +100,4 @@ python clawbio.py run pharmgx --demo
 
 ---
 
-[Skill Library](skills/index.md) · [SKILL.md Spec](reference/skillmd-spec.md) · [Contributing](contributing/index.md) · [All Tutorials](tutorials/index.md) · [Research](research/index.md)
+[Skill Library](skills/index.md) · [SKILL.md Spec](reference/skillmd-spec.md) · [Contributing](contributing/index.md) · [All Tutorials](tutorials/index.md) · [Presentations](presentations/index.md)

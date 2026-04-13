@@ -1,6 +1,6 @@
 site_name: ClawBio Documentation
 site_url: https://docs.clawbio.ai
-site_description: Technical documentation, tutorials, and research for ClawBio, the bioinformatics-native AI agent skill library.
+site_description: Technical documentation, tutorials, and skill reference for ClawBio, the bioinformatics-native AI agent skill library.
 site_author: Manuel Corpas
 repo_url: https://github.com/ClawBio/ClawBio
 repo_name: ClawBio/ClawBio
@@ -67,9 +67,6 @@ nav:
       - "Step 3 — Variant Interpretation": tutorials/variant-interpretation-workshop.md
       - "Step 4 — GWAS Workshop": tutorials/gwas-workshop.md
       - "Step 5 — 30x WGS Workshop": tutorials/30x-wgs-workshop.md
-  - Research:
-    - Overview: research/index.md
-    - Genomebook: research/genomebook.md
   - Deployment:
     - Overview: deployment/index.md
     - Docker: deployment/docker.md
@@ -80,6 +77,7 @@ nav:
     - CLI: reference/cli.md
     - Security: reference/security.md
     - Contributing: contributing/index.md
+  - Presentations: presentations/index.md
   - Hackathon:
     - Guide: hackathon/index.md
     - Setup: hackathon/setup.md
