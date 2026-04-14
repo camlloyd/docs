@@ -14,8 +14,8 @@ A running index of every ClawBio HTML deck, ordered newest first. Click a row to
 | 2026-03-06 | [ClawBio VC Pitch 2026](vc-pitch-2026/) | Investor deck |
 | 2026-02-23 | [10 Tips for Becoming a Top 1% AI User](top-1-percent-ai-user/) | Personal productivity talk on agentic AI workflows |
 
-## Adding a new deck
+## About these decks
 
-1. Drop the HTML file into `docs/presentations/<slug>/index.html`. Put any images or videos inside the same folder (for example `media/`).
-2. Add a new row at the **top** of the table above with the production date, the title, and a one-line context.
-3. Commit and push; GitHub Pages rebuilds `docs.clawbio.ai` automatically.
+Every deck is a self-contained HTML file, free to share and re-host. Use the **arrow keys** or **space** to advance, and **F** for fullscreen where supported. Speaker notes, when present, are toggled with **S**.
+
+Want a workshop or talk for your team, meetup, or conference? Reach out via [GitHub](https://github.com/ClawBio/ClawBio) or [clawbio.ai](https://clawbio.ai).
