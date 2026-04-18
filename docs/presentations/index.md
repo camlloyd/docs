@@ -4,6 +4,7 @@ A running index of every ClawBio HTML deck, ordered newest first. Click a row to
 
 | Date | Title | Context |
 |------|-------|---------|
+| 2026-04-18 | [AI-First Genomics for Global Health Equity](shanghai-haiju-2026/) | 6th Shanghai Global Talents Innovation & Entrepreneurship Competition (Haiju Yingcai). Life and Health track. |
 | 2026-04-15 | [Agentic Genomics: From Pipeline Automation to Autonomous Validation](kcl-scgg-agentic-genomics-2026/) | SCGG Away Day, King's College London. Family WGS case study with tiered validation framework. [YouTube](https://www.youtube.com/watch?v=ka0EHQkQ2kI) &#183; [Podcast](https://manuelcorpas.github.io/podcast/) |
 | 2026-04-02 | [Agentic GWAS Workshop](agentic-gwas-workshop/) | GWAS + PRS walk-through for the ClawBio workshop series |
 | 2026-03-28 | [Exploring a 30x Whole-Genome Sequence](30x-wgs-workshop/) | End-to-end WGS interpretation workshop |

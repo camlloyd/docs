@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClawBio — Shanghai Haiju Yingcai 2026</title>
+<meta name="description" content="ClawBio: AI-first genomics for global health equity. Entry for the 6th Shanghai Global Talents Innovation and Entrepreneurship Competition.">
+<meta property="og:title" content="ClawBio — Agentic Genomics for Global Health Equity">
+<meta property="og:description" content="The first bioinformatics-native AI agent skill library. 724 stars, 46 skills, 1,162 tests. AI UK Agent Gold Prize winner.">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../../assets/clawbio-logo.jpeg">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #0d1117;
+  --bg2:     #161b22;
+  --bg3:     #21262d;
+  --border:  #30363d;
+  --text:    #e6edf3;
+  --muted:   #8b949e;
+  --green:   #3fb950;
+  --green2:  #56d364;
+  --blue:    #58a6ff;
+  --red:     #f85149;
+  --purple:  #bc8cff;
+  --orange:  #e3b341;
+}
+
+html, body {
+  height: 100%; width: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── PROGRESS BAR ── */
+#progress-bar {
+  position: fixed; top: 0; left: 0; height: 3px;
+  background: var(--green); transition: width 0.4s ease; z-index: 200;
+}
+
+/* ── SLIDE COUNTER ── */
+#counter {
+  position: fixed; bottom: 1.4rem; right: 1.8rem;
+  font-size: 0.8rem; color: var(--muted); z-index: 200;
+  letter-spacing: 0.05em;
+}
+
+/* ── NAV ARROWS ── */
+.nav-btn {
+  position: fixed; top: 50%; transform: translateY(-50%);
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+  color: var(--muted); width: 40px; height: 40px; border-radius: 50%;
+  cursor: pointer; font-size: 1.1rem; display: flex; align-items: center;
+  justify-content: center; transition: all 0.2s; z-index: 200;
+}
+.nav-btn:hover { background: rgba(255,255,255,0.1); color: var(--text); }
+#btn-prev { left: 1rem; }
+#btn-next { right: 1rem; }
+
+/* ── DECK ── */
+.deck { width: 100vw; height: 100vh; position: relative; }
+
+.slide {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: 5vh 8vw;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.45s ease, transform 0.45s ease;
+  transform: translateX(30px);
+}
+.slide.active {
+  opacity: 1; visibility: visible; transform: translateX(0);
+}
+.slide.exit {
+  opacity: 0; transform: translateX(-30px);
+}
+
+/* ── SHARED TYPOGRAPHY ── */
+.label {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--green);
+  margin-bottom: 0.6rem;
+}
+.title {
+  font-size: clamp(1.9rem, 3.5vw, 3rem); font-weight: 800;
+  line-height: 1.15; letter-spacing: -0.02em; text-align: center;
+  margin-bottom: 1rem;
+}
+.em { color: var(--green); }
+.em-blue { color: var(--blue); }
+.em-purple { color: var(--purple); }
+.em-orange { color: var(--orange); }
+
+/* ── SLIDE 0 — TITLE ── */
+.title-brand {
+  font-size: clamp(3rem, 6vw, 5rem); font-weight: 900;
+  letter-spacing: -0.03em; color: var(--text); margin-bottom: 0.5rem;
+}
+.title-hook {
+  font-size: clamp(1.1rem, 2vw, 1.5rem); color: var(--muted);
+  max-width: 700px; text-align: center; line-height: 1.6;
+  margin-bottom: 0.4rem;
+}
+.title-hook strong { color: var(--text); }
+.title-sub {
+  font-size: clamp(0.85rem, 1.2vw, 1rem); color: var(--muted);
+  text-align: center; font-style: italic; margin-bottom: 2.2rem;
+}
+.stats-row {
+  display: flex; gap: 3rem; flex-wrap: wrap; justify-content: center;
+}
+.stat { text-align: center; }
+.stat-num {
+  font-size: clamp(2rem, 3.5vw, 2.8rem); font-weight: 800;
+  color: var(--green); line-height: 1;
+}
+.stat-label {
+  font-size: 0.78rem; color: var(--muted); margin-top: 0.3rem;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+
+/* ── GRID CARDS ── */
+.problem-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem; width: 100%; max-width: 960px; margin-top: 0.5rem;
+}
+.problem-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.6rem 1.4rem;
+  display: flex; flex-direction: column; gap: 0.6rem;
+}
+.problem-icon { font-size: 2rem; }
+.problem-heading { font-size: 1rem; font-weight: 700; color: var(--text); }
+.problem-body { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+
+/* ── TRACTION ── */
+.traction-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem; width: 100%; max-width: 900px; margin-bottom: 2rem;
+}
+.traction-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.4rem 1rem; text-align: center;
+}
+.traction-num {
+  font-size: clamp(2.4rem, 4vw, 3.5rem); font-weight: 900;
+  color: var(--green); line-height: 1;
+}
+.traction-label {
+  font-size: 0.82rem; font-weight: 700; color: var(--text);
+  margin: 0.4rem 0 0.2rem;
+}
+.traction-sub { font-size: 0.75rem; color: var(--muted); }
+
+/* ── CLOSE GRID ── */
+.bounty-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 0.8rem; width: 100%; max-width: 760px; margin-bottom: 1.6rem;
+}
+.bounty-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 0.9rem 1.2rem;
+  display: flex; flex-direction: column; gap: 0.25rem;
+}
+.bounty-name {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.09em;
+  text-transform: uppercase; color: var(--green);
+}
+.bounty-why { font-size: 0.84rem; color: var(--muted); line-height: 1.5; }
+
+/* ── PILLAR GRID ── */
+.pillar-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem; width: 100%; max-width: 960px; margin-top: 0.5rem;
+}
+.pillar-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.5rem 1.3rem; text-align: center;
+}
+.pillar-icon { font-size: 2.2rem; margin-bottom: 0.7rem; }
+.pillar-heading { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
+.pillar-body { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+/* ── AWARD BADGE ── */
+.award-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: rgba(227,179,65,0.12); border: 1px solid rgba(227,179,65,0.4);
+  border-radius: 8px; padding: 0.4rem 1rem; margin-bottom: 1.8rem;
+  font-size: 0.85rem; font-weight: 700; color: var(--orange);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .problem-grid, .bounty-grid, .pillar-grid { grid-template-columns: 1fr; overflow-y: auto; max-height: 70vh; }
+  .traction-grid { grid-template-columns: repeat(2, 1fr); }
+  .slide { padding: 3vh 5vw; justify-content: flex-start; padding-top: 4vh; overflow-y: auto; }
+}
+
+/* ── KEYBOARD HINT ── */
+#hint {
+  position: fixed; bottom: 1.4rem; left: 50%; transform: translateX(-50%);
+  font-size: 0.72rem; color: var(--muted); z-index: 200;
+  opacity: 1; transition: opacity 1s ease;
+}
+#hint.hidden { opacity: 0; pointer-events: none; }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+<div id="counter">1 / 8</div>
+<div id="hint">&#8592; &#8594; arrow keys or click to navigate</div>
+
+<button class="nav-btn" id="btn-prev" aria-label="Previous slide">&#8592;</button>
+<button class="nav-btn" id="btn-next" aria-label="Next slide">&#8594;</button>
+
+<div class="deck" id="deck">
+
+  <!-- SLIDE 0: TITLE -->
+  <div class="slide active" id="slide-0">
+    <div class="award-badge">&#127942; AI UK Agent Gold Prize Winner</div>
+    <img src="../../assets/clawbio-logo.jpeg" alt="ClawBio" style="width:80px;height:80px;border-radius:16px;object-fit:cover;margin-bottom:0.6rem;">
+    <div class="title-brand">ClawBio</div>
+    <p class="title-hook">
+      <strong>AI-First Genomics for Global Health Equity.</strong><br>
+      The first bioinformatics-native AI agent skill library.<br>Local-first. Reproducible. Open source.
+    </p>
+    <p class="title-sub">Life and Health Track &#183; Shanghai Haiju Yingcai 2026</p>
+    <div class="stats-row">
+      <div class="stat"><div class="stat-num">724</div><div class="stat-label">GitHub Stars</div></div>
+      <div class="stat"><div class="stat-num">137</div><div class="stat-label">Forks</div></div>
+      <div class="stat"><div class="stat-num">46</div><div class="stat-label">Skills</div></div>
+      <div class="stat"><div class="stat-num">1,162</div><div class="stat-label">Tests</div></div>
+    </div>
+    <div style="margin-top:1.5rem;font-size:0.85rem;color:var(--muted);font-family:monospace;">Manuel Corpas &#183; clawbio.ai</div>
+  </div>
+
+  <!-- SLIDE 1: PROBLEM -->
+  <div class="slide" id="slide-1">
+    <div class="label">The Problem</div>
+    <h2 class="title">Precision medicine is built on <span class="em" style="color:var(--red);">biased foundations.</span></h2>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-icon">&#127758;</div>
+        <div class="problem-heading">85% European bias</div>
+        <div class="problem-body">85% of genomic research is based on populations of European descent. <strong style="color:var(--text);">4.5 billion people</strong> are underrepresented in precision medicine.</div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">&#128200;</div>
+        <div class="problem-heading">AI compounds inequity</div>
+        <div class="problem-body">LLMs trained on biased literature <strong style="color:var(--red);">amplify existing gaps</strong>. Our research shows biobanks encode 2.7x isolation for Global South diseases.</div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">&#128274;</div>
+        <div class="problem-heading">Tools are inaccessible</div>
+        <div class="problem-body">Genomic analysis requires expensive cloud infrastructure. <strong style="color:var(--text);">Labs in developing nations</strong> cannot access the tools they need most.</div>
+      </div>
+    </div>
+    <div style="margin-top:1.2rem;font-size:1rem;color:var(--muted);text-align:center;max-width:700px;line-height:1.7;">
+      The populations with the <strong style="color:var(--text);">greatest genetic diversity</strong> have the <strong style="color:var(--red);">least genomic infrastructure</strong>.
+    </div>
+  </div>
+
+  <!-- SLIDE 2: SOLUTION — THREE PILLARS -->
+  <div class="slide" id="slide-2">
+    <div class="label">The Solution</div>
+    <h2 class="title">Three pillars for <span class="em">equitable genomics.</span></h2>
+    <div class="pillar-grid">
+      <div class="pillar-card" style="border-color:var(--green);">
+        <div class="pillar-icon">&#129430;</div>
+        <div class="pillar-heading" style="color:var(--green);">ClawBio</div>
+        <div class="pillar-body"><strong style="color:var(--text);">The execution layer.</strong> 46 agent-native bioinformatics skills. Runs on consumer laptops. No cloud needed. Every result is reproducible and auditable.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon">&#9878;&#65039;</div>
+        <div class="pillar-heading" style="color:var(--blue);">HEIM</div>
+        <div class="pillar-body"><strong style="color:var(--text);">The measurement layer.</strong> Health Equity Informative Metrics. Quantifies research bias across 176 diseases, 70 biobanks, 13.1M publications. Under review at Nature Health.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon">&#128202;</div>
+        <div class="pillar-heading" style="color:var(--purple);">FairMed</div>
+        <div class="pillar-body"><strong style="color:var(--text);">The evidence layer.</strong> Empirically proves UK Biobank amplifies bias 2.7x for Global South diseases. First audit framework replicable for any biobank.</div>
+      </div>
+    </div>
+    <div style="margin-top:1.2rem;font-size:0.95rem;color:var(--muted);text-align:center;max-width:700px;line-height:1.7;">
+      Together: <strong style="color:var(--text);">measure the gap</strong> (HEIM), <strong style="color:var(--text);">prove it is structural</strong> (FairMed), <strong style="color:var(--text);">close it with tools</strong> (ClawBio).
+    </div>
+  </div>
+
+  <!-- SLIDE 3: CLAWBIO PLATFORM -->
+  <div class="slide" id="slide-3">
+    <div class="label">ClawBio Platform</div>
+    <h2 class="title">Agent-native skills that <span class="em">any AI can run.</span></h2>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-icon">&#128138;</div>
+        <div class="problem-heading">Pharmacogenomics</div>
+        <div class="problem-body">12 genes, 51 drugs. Snap a photo of any medication, get a personalised drug safety card from your genome. <strong style="color:var(--green);">Live today.</strong></div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">&#129516;</div>
+        <div class="problem-heading">Variant Interpretation</div>
+        <div class="problem-body">GWAS lookup across 9 databases, PRS calculation, fine-mapping with SuSiE/ABF. From raw VCF to clinical insight.</div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">&#127981;</div>
+        <div class="problem-heading">Galaxy Bridge</div>
+        <div class="problem-body">8,000+ Galaxy bioinformatics tools accessible via natural language. The largest tool catalogue in biology, agent-ready.</div>
+      </div>
+    </div>
+    <div style="margin-top:1.4rem;display:flex;gap:2rem;flex-wrap:wrap;justify-content:center;align-items:center;">
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:0.8rem 1.2rem;text-align:center;">
+        <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--green);margin-bottom:0.3rem;">Reproducibility</div>
+        <div style="font-size:0.82rem;color:var(--muted);">Every analysis exports commands.sh, environment.yml, SHA-256 checksums</div>
+      </div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:0.8rem 1.2rem;text-align:center;">
+        <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);margin-bottom:0.3rem;">Privacy-first</div>
+        <div style="font-size:0.82rem;color:var(--muted);">All data stays on device. No cloud upload. GDPR-ready by design</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: TRACTION -->
+  <div class="slide" id="slide-4">
+    <div class="label">Traction</div>
+    <h2 class="title">Organic growth. <span class="em">Zero paid marketing.</span></h2>
+    <div class="traction-grid">
+      <div class="traction-card" style="border-color:var(--green);">
+        <div class="traction-num">724</div>
+        <div class="traction-label">GitHub Stars</div>
+        <div class="traction-sub">+100/month, organic</div>
+      </div>
+      <div class="traction-card">
+        <div class="traction-num">137</div>
+        <div class="traction-label">Forks</div>
+        <div class="traction-sub">active community</div>
+      </div>
+      <div class="traction-card">
+        <div class="traction-num">46</div>
+        <div class="traction-label">Skills</div>
+        <div class="traction-sub">PGx, GWAS, scRNA, equity</div>
+      </div>
+      <div class="traction-card" style="border-color:var(--orange);">
+        <div class="traction-num" style="color:var(--orange);">Gold</div>
+        <div class="traction-label">AI UK Agent Prize</div>
+        <div class="traction-sub">top European hackathon</div>
+      </div>
+    </div>
+    <div style="width:100%;max-width:800px;">
+      <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--green);margin-bottom:0.7rem;">Validation</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;font-size:0.88rem;color:var(--muted);line-height:1.7;">
+        <div>&#10003; LLM-UKB accepted at PLOS Computational Biology</div>
+        <div>&#10003; HEIM framework under review at Nature Health</div>
+        <div>&#10003; 719 guests registered for virtual Agentic Genomics event (Apr 22)</div>
+        <div>&#10003; 4 hackathons: Imperial (109), Westminster (81), Madrid (41), virtual</div>
+        <div>&#10003; Live on Telegram and WhatsApp</div>
+        <div>&#10003; External contributors across 3+ countries</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: CHINA OPPORTUNITY -->
+  <div class="slide" id="slide-5">
+    <div class="label">Shanghai Opportunity</div>
+    <h2 class="title">Why Shanghai is the <span class="em">ideal launchpad.</span></h2>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-icon">&#127464;&#127475;</div>
+        <div class="problem-heading">Genomic diversity</div>
+        <div class="problem-body">China has <strong style="color:var(--text);">56 ethnic groups</strong> and the largest population contributing to biobanks. A natural testing ground for equity-first genomics tools.</div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">&#128161;</div>
+        <div class="problem-heading">AI + biotech leadership</div>
+        <div class="problem-body">Shanghai's pharma and biotech ecosystem is among Asia's largest. ClawBio's <strong style="color:var(--text);">local-first, privacy-preserving</strong> architecture aligns with data sovereignty requirements.</div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">&#127760;</div>
+        <div class="problem-heading">Global South bridge</div>
+        <div class="problem-body">China's Belt and Road health partnerships span 140+ countries. ClawBio provides the <strong style="color:var(--green);">technical infrastructure</strong> for genomic equity across these networks.</div>
+      </div>
+    </div>
+    <div style="margin-top:1.2rem;font-size:0.95rem;color:var(--muted);text-align:center;max-width:700px;line-height:1.7;">
+      Shanghai can lead the transition from <strong style="color:var(--text);">European-centric precision medicine</strong> to <strong style="color:var(--green);">globally inclusive genomics</strong>.
+    </div>
+  </div>
+
+  <!-- SLIDE 6: TEAM -->
+  <div class="slide" id="slide-6">
+    <div class="label">Team</div>
+    <h2 class="title">Built by a <span class="em">domain expert.</span></h2>
+    <div style="display:flex;gap:2rem;align-items:center;justify-content:center;width:100%;max-width:800px;margin-top:0.5rem;flex-wrap:wrap;">
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.8rem 2rem;max-width:500px;width:100%;">
+        <div style="font-size:1.2rem;font-weight:800;margin-bottom:0.6rem;">Manuel Corpas, PhD</div>
+        <div style="font-size:0.85rem;color:var(--muted);line-height:1.8;">
+          &#8594; 20+ years in bioinformatics and genomics<br>
+          &#8594; Former team lead at EMBL-EBI (European Bioinformatics Institute)<br>
+          &#8594; Co-founded GENEQ Global (genomic equity consultancy)<br>
+          &#8594; First person to publish a personal genome interpretation as open data<br>
+          &#8594; Built BioJS (open-source biological visualization; now 180K+ stars as OpenClaw)<br>
+          &#8594; Multiple publications in Nature, PLOS, Bioinformatics<br>
+          &#8594; AI UK Agent Gold Prize winner (2026)<br>
+          &#8594; Principal Lecturer, University of Westminster
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0.8rem;">
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:0.9rem 1.2rem;text-align:center;">
+          <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--green);margin-bottom:0.3rem;">IP Ownership</div>
+          <div style="font-size:0.82rem;color:var(--muted);">Full independent IP<br>Open source (MIT licence)</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:0.9rem 1.2rem;text-align:center;">
+          <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);margin-bottom:0.3rem;">Stage</div>
+          <div style="font-size:0.82rem;color:var(--muted);">Early / start-up<br>Registered &lt; 1 year</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:0.9rem 1.2rem;text-align:center;">
+          <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple);margin-bottom:0.3rem;">Partners</div>
+          <div style="font-size:0.82rem;color:var(--muted);">GENEQ Global<br>Westminster University</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: CLOSE / ASK -->
+  <div class="slide" id="slide-7">
+    <div class="label">The Vision</div>
+    <h2 class="title">Making precision medicine work for <span class="em">everyone.</span></h2>
+    <div style="max-width:760px;text-align:center;margin-bottom:2rem;">
+      <div style="font-size:1.05rem;color:var(--muted);line-height:1.8;">
+        ClawBio is building <strong style="color:var(--text);">the infrastructure layer for equitable genomics</strong>.<br>
+        We measure the gaps, prove they are structural, and ship tools that close them.
+      </div>
+    </div>
+    <div class="bounty-grid">
+      <div class="bounty-card">
+        <div class="bounty-name">&#127942; Proven traction</div>
+        <div class="bounty-why">724 stars, 46 skills, Gold Prize at AI UK. Publications in top journals. Workshops at leading universities.</div>
+      </div>
+      <div class="bounty-card">
+        <div class="bounty-name">&#128274; Privacy by design</div>
+        <div class="bounty-why">All genomic data stays local. No cloud dependency. Full GDPR and data sovereignty compliance. Ideal for regulated markets.</div>
+      </div>
+      <div class="bounty-card">
+        <div class="bounty-name">&#127758; Global South focus</div>
+        <div class="bounty-why">4.5 billion people excluded from precision medicine. Our tools and research address this gap directly, with China as a key partner.</div>
+      </div>
+      <div class="bounty-card">
+        <div class="bounty-name">&#128640; Shanghai landing</div>
+        <div class="bounty-why">Seeking incubation, clinical partnerships, and access to Shanghai's biotech ecosystem to deploy ClawBio across Asia-Pacific markets.</div>
+      </div>
+    </div>
+    <div style="font-size:clamp(1.2rem,2.2vw,1.7rem);font-weight:800;color:var(--green);text-align:center;margin-bottom:1.5rem;">
+      ClawBio: equitable genomics, powered by AI.
+    </div>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;">
+      <a href="https://github.com/ClawBio/ClawBio" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.5rem 1.1rem;border-radius:8px;background:var(--bg3);border:1px solid var(--border);color:var(--text);text-decoration:none;font-size:0.85rem;font-weight:600;">&#11088; GitHub</a>
+      <a href="https://clawbio.ai" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.5rem 1.1rem;border-radius:8px;background:rgba(63,185,80,0.12);border:1px solid rgba(63,185,80,0.4);color:var(--green);text-decoration:none;font-size:0.85rem;font-weight:600;">&#127758; clawbio.ai</a>
+      <a href="https://docs.clawbio.ai" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.5rem 1.1rem;border-radius:8px;background:var(--bg3);border:1px solid var(--border);color:var(--text);text-decoration:none;font-size:0.85rem;font-weight:600;">&#128214; docs.clawbio.ai</a>
+    </div>
+  </div>
+
+</div><!-- /deck -->
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+
+function goTo(n) {
+  if (n < 0 || n >= total) return;
+  slides[current].classList.remove('active');
+  slides[current].classList.add('exit');
+  setTimeout(() => slides[current].classList.remove('exit'), 450);
+  current = n;
+  slides[current].classList.add('active');
+  document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
+  document.getElementById('progress-bar').style.width = ((current + 1) / total * 100) + '%';
+  if (current > 0) document.getElementById('hint').classList.add('hidden');
+}
+
+document.getElementById('btn-prev').addEventListener('click', () => goTo(current - 1));
+document.getElementById('btn-next').addEventListener('click', () => goTo(current + 1));
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'ArrowDown') { e.preventDefault(); goTo(current + 1); }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+});
+
+// touch swipe
+let tx = 0;
+document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive: true});
+document.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 50) dx < 0 ? goTo(current + 1) : goTo(current - 1);
+}, {passive: true});
+
+// init progress
+document.getElementById('progress-bar').style.width = (1 / total * 100) + '%';
+</script>
+</body>
+</html>
