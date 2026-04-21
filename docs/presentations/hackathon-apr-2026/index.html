@@ -119,23 +119,52 @@
     </div>
   </div>
 
-  <!-- SLIDE 2: What is ClawBio -->
+  <!-- SLIDE 2: Why ClawBio exists -->
   <div class="slide" data-n="2">
     <div class="slide-inner">
-      <h2>ClawBio in 30 seconds</h2>
-      <p class="big bright">An open-source toolkit of AI agent skills for genomic analysis.</p>
-      <p>Each skill is a self-contained bioinformatics pipeline: a SKILL.md contract, a Python script, demo data, and a structured report. Skills run locally. Your data never leaves your machine.</p>
-      <div class="stats" style="margin-top:1.5rem;">
+      <h2>Why ClawBio exists</h2>
+      <p>Bioinformatics has an access problem. Running a variant interpretation pipeline requires installing VEP, configuring reference databases, writing parsers, cross-referencing ClinVar, gnomAD, and CPIC by hand. It takes days and a bioinformatics team.</p>
+      <p>Meanwhile, general-purpose AI chatbots hallucinate gene-drug associations and invent variant classifications. They are fast but unreliable.</p>
+      <div class="callout">
+        <p><strong>ClawBio fills the gap:</strong> AI that is fast <em>and</em> grounded. Every skill is constrained by a SKILL.md contract that references published databases, not language model inference. The AI orchestrates; the databases provide the facts.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: The story so far -->
+  <div class="slide" data-n="3">
+    <div class="slide-inner">
+      <h2>The story so far</h2>
+      <table>
+        <thead><tr><th>Date</th><th>Milestone</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Jan 2026</strong></td><td>First commit. PharmGx Reporter: one skill, one genome, one report.</td></tr>
+          <tr><td><strong>Feb 2026</strong></td><td>OpenClaw skill spec published. Equity scorer and nutrigenomics added.</td></tr>
+          <tr><td><strong>Mar 2026</strong></td><td>Imperial College hackathon. GWAS pipeline, fine-mapping, scRNA-seq skills. 400+ stars.</td></tr>
+          <tr><td><strong>Apr 2026</strong></td><td>737+ stars, 40+ skills, 17 contributors. Virtual workshop: 754 registrants from 50+ countries.</td></tr>
+        </tbody>
+      </table>
+      <p>Built by <strong>Manuel Corpas</strong> (University of Westminster) with contributions from researchers, students, and developers worldwide. MIT-licensed from day one.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: ClawBio today -->
+  <div class="slide" data-n="4">
+    <div class="slide-inner">
+      <h2>ClawBio today</h2>
+      <div class="stats" style="margin-top:1rem;">
         <div class="stat"><span class="num">40+</span><span class="label">bioinformatics skills</span></div>
         <div class="stat"><span class="num">737+</span><span class="label">GitHub stars</span></div>
         <div class="stat"><span class="num">141</span><span class="label">forks</span></div>
         <div class="stat"><span class="num">17</span><span class="label">contributors</span></div>
       </div>
+      <p>Each skill is a self-contained bioinformatics pipeline: a SKILL.md contract, a Python script, demo data, and a structured report. Skills run locally. Your data never leaves your machine.</p>
+      <p>Yesterday's virtual workshop annotated real genomes, ran GWAS lookups across 9 databases, and computed polygenic risk scores, all in Google Colab with zero setup.</p>
     </div>
   </div>
 
-  <!-- SLIDE 3: How a skill works -->
-  <div class="slide" data-n="3">
+  <!-- SLIDE 5: How a skill works -->
+  <div class="slide" data-n="5">
     <div class="slide-inner">
       <h2>How a skill works</h2>
       <div class="pipeline">
@@ -168,8 +197,8 @@
     </div>
   </div>
 
-  <!-- SLIDE 4: Existing skills -->
-  <div class="slide" data-n="4">
+  <!-- SLIDE 6: Existing skills -->
+  <div class="slide" data-n="6">
     <div class="slide-inner">
       <h2>Skills you can build on</h2>
       <div class="card-grid three" style="margin-top:1rem;">
@@ -203,7 +232,7 @@
   </div>
 
   <!-- SLIDE 5: Section - Challenge tracks -->
-  <div class="slide section-slide center" data-n="5">
+  <div class="slide section-slide center" data-n="7">
     <div class="slide-inner">
       <p class="big" style="color:var(--accent2);">Challenge tracks</p>
       <h1>Three tracks, <em>one framework</em></h1>
@@ -211,7 +240,7 @@
   </div>
 
   <!-- SLIDE 6: Track 1 - New skill -->
-  <div class="slide" data-n="6">
+  <div class="slide" data-n="8">
     <div class="slide-inner">
       <h2>Track 1: New skill development</h2>
       <p class="big bright">Add a bioinformatics skill to ClawBio.</p>
@@ -227,7 +256,7 @@ mkdir -p skills/your-skill/tests skills/your-skill/examples
   </div>
 
   <!-- SLIDE 7: Track 2 - Agent workflows -->
-  <div class="slide" data-n="7">
+  <div class="slide" data-n="9">
     <div class="slide-inner">
       <h2>Track 2: Agent workflows</h2>
       <p class="big bright">Chain multiple skills to solve a multi-step genomics question.</p>
@@ -246,7 +275,7 @@ mkdir -p skills/your-skill/tests skills/your-skill/examples
   </div>
 
   <!-- SLIDE 8: Track 3 - Equity -->
-  <div class="slide" data-n="8">
+  <div class="slide" data-n="10">
     <div class="slide-inner">
       <h2>Track 3: Equity and access</h2>
       <p class="big bright">Audit representation gaps in genomic datasets.</p>
@@ -274,57 +303,8 @@ mkdir -p skills/your-skill/tests skills/your-skill/examples
     </div>
   </div>
 
-  <!-- SLIDE 9: Section - TuringDB -->
-  <div class="slide section-slide center" data-n="9">
-    <div class="slide-inner">
-      <p class="big" style="color:var(--purple);">Bonus challenge</p>
-      <h1 style="color:var(--purple);">TuringDB <em style="color:var(--purple);">Graph</em> Challenge</h1>
-      <p class="big">Additional prizes for teams using TuringDB as a graph layer</p>
-    </div>
-  </div>
-
-  <!-- SLIDE 10: What is TuringDB -->
-  <div class="slide" data-n="10">
-    <div class="slide-inner">
-      <h2>What is TuringDB?</h2>
-      <p>A high-performance, in-memory graph database built in C++. Column-oriented storage, zero-lock concurrency, and git-like version control for graphs.</p>
-      <div class="stats" style="margin-top:1rem;">
-        <div class="stat"><span class="num" style="color:var(--purple);">200x</span><span class="label">faster than Neo4j on deep queries</span></div>
-        <div class="stat"><span class="num" style="color:var(--purple);">0.1ms</span><span class="label">query latency</span></div>
-        <div class="stat"><span class="num" style="color:var(--purple);">10M+</span><span class="label">node graphs</span></div>
-        <div class="stat"><span class="num" style="color:var(--purple);">8-hop</span><span class="label">queries in 476ms</span></div>
-      </div>
-      <pre style="margin-top:1rem;"><code>pip install turingdb</code></pre>
-      <p>OpenCypher query language. Python SDK. REST API. <a href="https://github.com/turing-db/turingdb" style="color:var(--purple)">github.com/turing-db/turingdb</a></p>
-    </div>
-  </div>
-
-  <!-- SLIDE 11: TuringDB challenge tracks -->
-  <div class="slide" data-n="11">
-    <div class="slide-inner">
-      <h2>Three graph directions</h2>
-      <div class="card-grid three" style="margin-top:1rem;">
-        <div class="card highlight">
-          <h3>Drug repurposing</h3>
-          <p>Use agentic AI + knowledge graphs to identify repurposed drugs. Focus on rare diseases and underrepresented patient populations.</p>
-        </div>
-        <div class="card highlight">
-          <h3>Graph-based memory</h3>
-          <p>Build a graph-powered memory layer for biomedical agents: R&amp;D, clinical research, tumour boards, and more.</p>
-        </div>
-        <div class="card highlight">
-          <h3>Multimodal KG integration</h3>
-          <p>Fuse multiomics with clinical data and knowledge graphs inside agentic workflows. Applications in cancer research.</p>
-        </div>
-      </div>
-      <div class="callout purple" style="margin-top:1rem;">
-        <p><strong>You can combine the TuringDB bonus with any of the three main tracks.</strong> Build a new skill that uses a graph backend, chain skills through a knowledge graph, or score equity across a graph of variant-population relationships.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- SLIDE 12: Section - Schedule -->
-  <div class="slide section-slide center" data-n="12">
+  <!-- SLIDE 9: Section - Schedule -->
+  <div class="slide section-slide center" data-n="11">
     <div class="slide-inner">
       <p class="big" style="color:var(--accent2);">The day</p>
       <h1>Schedule and <em>logistics</em></h1>
@@ -332,7 +312,7 @@ mkdir -p skills/your-skill/tests skills/your-skill/examples
   </div>
 
   <!-- SLIDE 13: Schedule -->
-  <div class="slide" data-n="13">
+  <div class="slide" data-n="12">
     <div class="slide-inner">
       <h2>Schedule</h2>
       <table>
@@ -353,7 +333,7 @@ mkdir -p skills/your-skill/tests skills/your-skill/examples
   </div>
 
   <!-- SLIDE 14: Prizes -->
-  <div class="slide" data-n="14">
+  <div class="slide" data-n="13">
     <div class="slide-inner">
       <h2>Prizes</h2>
       <div class="card-grid" style="margin-top:1rem;">
@@ -369,17 +349,13 @@ mkdir -p skills/your-skill/tests skills/your-skill/examples
           <h3>Best equity hack</h3>
           <p>Most impactful use of the HEIM framework. Surfaces a representation gap with data.</p>
         </div>
-        <div class="card highlight">
-          <h3>Best TuringDB integration</h3>
-          <p>Bonus prize. Best use of TuringDB as a graph layer in any track.</p>
-        </div>
       </div>
       <p style="margin-top:1rem;">Details announced on the day. All winning skills will be merged into ClawBio with full attribution.</p>
     </div>
   </div>
 
   <!-- SLIDE 15: What to bring -->
-  <div class="slide" data-n="15">
+  <div class="slide" data-n="14">
     <div class="slide-inner">
       <h2>What to bring</h2>
       <ul>
@@ -392,14 +368,11 @@ mkdir -p skills/your-skill/tests skills/your-skill/examples
 cd ClawBio
 pip install -r requirements.txt
 python skills/bio-orchestrator/orchestrator.py --list-skills</code></pre>
-      <div class="callout">
-        <p><strong>Optional:</strong> <code>pip install turingdb</code> if you want to try the graph challenge.</p>
-      </div>
     </div>
   </div>
 
   <!-- SLIDE 16: Judging criteria -->
-  <div class="slide" data-n="16">
+  <div class="slide" data-n="15">
     <div class="slide-inner">
       <h2>Judging criteria</h2>
       <table>
@@ -416,7 +389,7 @@ python skills/bio-orchestrator/orchestrator.py --list-skills</code></pre>
   </div>
 
   <!-- SLIDE 17: Submission -->
-  <div class="slide" data-n="17">
+  <div class="slide" data-n="16">
     <div class="slide-inner">
       <h2>How to submit</h2>
       <ol>
@@ -433,7 +406,7 @@ python skills/bio-orchestrator/orchestrator.py --list-skills</code></pre>
   </div>
 
   <!-- SLIDE 18: Community -->
-  <div class="slide" data-n="18">
+  <div class="slide" data-n="17">
     <div class="slide-inner center">
       <h2>Join the community</h2>
       <div class="card-grid three" style="margin-top:1rem;">
