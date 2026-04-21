@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Agents for Health: ClawBio Hackathon | 23 April 2026</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0d1117; --bg2: #161b22; --bg3: #21262d;
+      --border: #30363d; --text: #e6edf3; --muted: #8b949e;
+      --accent: #3fb950; --accent2: #58a6ff; --warn: #d29922; --danger: #f85149;
+      --purple: #bc8cff;
+    }
+    html, body { height: 100%; overflow: hidden; }
+    body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+
+    .deck { position: relative; width: 100%; height: 100%; }
+    .slide {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      padding: 4rem 6rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .slide.active { opacity: 1; pointer-events: auto; }
+    .slide-inner { max-width: 960px; width: 100%; }
+
+    h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.15; margin-bottom: 1rem; letter-spacing: -0.02em; }
+    h1 em { font-style: normal; color: var(--accent); }
+    h2 { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 700; margin-bottom: 1rem; color: var(--accent); }
+    h3 { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.6rem; color: var(--accent2); }
+    p { font-size: 1.15rem; line-height: 1.7; color: var(--muted); margin-bottom: 0.8rem; }
+    p.big { font-size: 1.35rem; }
+    .bright { color: var(--text); }
+    .green { color: var(--accent); }
+    .blue { color: var(--accent2); }
+    .yellow { color: var(--warn); }
+    .red { color: var(--danger); }
+    .purple { color: var(--purple); }
+    strong { color: var(--text); }
+
+    ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+    li { font-size: 1.1rem; line-height: 1.7; color: var(--muted); margin-bottom: 0.5rem; }
+    li strong { color: var(--text); }
+
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; margin: 1.5rem 0; }
+    .stat { text-align: center; padding: 1.5rem; background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; }
+    .stat .num { font-size: 2.5rem; font-weight: 800; color: var(--accent); display: block; }
+    .stat .label { font-size: 0.85rem; color: var(--muted); margin-top: 0.3rem; }
+
+    .card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1rem 0; }
+    .card-grid.three { grid-template-columns: repeat(3, 1fr); }
+    .card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem 1.5rem; }
+    .card h3 { margin-bottom: 0.4rem; }
+    .card p { font-size: 0.95rem; margin-bottom: 0; }
+    .card.highlight { border-color: var(--purple); background: rgba(188,140,255,0.06); }
+    .card.highlight h3 { color: var(--purple); }
+
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    th { text-align: left; padding: 0.7rem 1rem; background: var(--bg2); color: var(--text); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid var(--border); }
+    td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); color: var(--muted); font-size: 1rem; }
+
+    .pipeline { display: flex; align-items: center; justify-content: center; gap: 0.5rem; flex-wrap: wrap; margin: 2rem 0; }
+    .pipeline-step { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 0.8rem 1.2rem; font-weight: 600; font-size: 1rem; color: var(--text); }
+    .pipeline-step.active-step { border-color: var(--accent); color: var(--accent); background: rgba(63,185,80,0.08); }
+    .pipeline-arrow { color: var(--muted); font-size: 1.3rem; }
+
+    .callout { border-left: 4px solid var(--accent); background: rgba(63,185,80,0.06); padding: 1.2rem 1.5rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; }
+    .callout.warn { border-left-color: var(--warn); background: rgba(210,153,34,0.06); }
+    .callout.danger { border-left-color: var(--danger); background: rgba(248,81,73,0.06); }
+    .callout.purple { border-left-color: var(--purple); background: rgba(188,140,255,0.06); }
+    .callout p { margin-bottom: 0; }
+
+    code { background: var(--bg2); border: 1px solid var(--border); border-radius: 4px; padding: 0.15rem 0.4rem; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.9em; color: var(--accent2); }
+    pre { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem 1.5rem; overflow-x: auto; margin: 1rem 0; }
+    pre code { background: none; border: none; padding: 0; font-size: 0.95rem; color: var(--text); }
+
+    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 1rem 0; }
+    .compare-col { padding: 1.5rem; border-radius: 10px; }
+
+    .center { text-align: center; }
+    .center h1, .center h2, .center p { text-align: center; }
+
+    .controls { position: fixed; bottom: 1.5rem; right: 2rem; display: flex; gap: 0.5rem; z-index: 100; }
+    .controls button { background: var(--bg2); border: 1px solid var(--border); color: var(--text); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; }
+    .controls button:hover { background: var(--bg3); }
+    .controls button:disabled { opacity: 0.3; cursor: default; }
+    .progress { position: fixed; top: 0; left: 0; height: 3px; background: var(--accent); z-index: 100; transition: width 0.3s; }
+    .counter { position: fixed; bottom: 1.7rem; left: 2rem; font-size: 0.85rem; color: var(--muted); z-index: 100; }
+
+    .title-slide { background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(63,185,80,0.12) 0%, transparent 70%); }
+    .title-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(63,185,80,0.15); border: 1px solid rgba(63,185,80,0.4); color: var(--accent); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.3rem 1rem; border-radius: 999px; margin-bottom: 1.5rem; }
+    .title-badge img { height: 1.4rem; width: 1.4rem; border-radius: 50%; object-fit: cover; }
+    .section-slide { background: radial-gradient(ellipse 60% 40% at 50% 50%, rgba(88,166,255,0.08) 0%, transparent 70%); }
+
+    @media (max-width: 768px) {
+      .slide { padding: 2rem; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .card-grid, .card-grid.three { grid-template-columns: 1fr; }
+      .compare { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+<div class="counter" id="counter"></div>
+
+<div class="deck" id="deck">
+
+  <!-- SLIDE 1: Title -->
+  <div class="slide title-slide center active" data-n="1">
+    <div class="slide-inner">
+      <div class="title-badge"><img src="../../assets/clawbio-logo.jpeg" alt="ClawBio logo">ClawBio Hackathon</div>
+      <h1>AI Agents for <em>Health</em></h1>
+      <p class="big">Build agents for genomics, pharmacogenomics, and digital health</p>
+      <p>23 April 2026 &middot; University of Westminster &middot; 115 New Cavendish St, London</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: What is ClawBio -->
+  <div class="slide" data-n="2">
+    <div class="slide-inner">
+      <h2>ClawBio in 30 seconds</h2>
+      <p class="big bright">An open-source toolkit of AI agent skills for genomic analysis.</p>
+      <p>Each skill is a self-contained bioinformatics pipeline: a SKILL.md contract, a Python script, demo data, and a structured report. Skills run locally. Your data never leaves your machine.</p>
+      <div class="stats" style="margin-top:1.5rem;">
+        <div class="stat"><span class="num">40+</span><span class="label">bioinformatics skills</span></div>
+        <div class="stat"><span class="num">737+</span><span class="label">GitHub stars</span></div>
+        <div class="stat"><span class="num">141</span><span class="label">forks</span></div>
+        <div class="stat"><span class="num">17</span><span class="label">contributors</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: How a skill works -->
+  <div class="slide" data-n="3">
+    <div class="slide-inner">
+      <h2>How a skill works</h2>
+      <div class="pipeline">
+        <div class="pipeline-step">SKILL.md</div>
+        <div class="pipeline-arrow">&rarr;</div>
+        <div class="pipeline-step active-step">Python script</div>
+        <div class="pipeline-arrow">&rarr;</div>
+        <div class="pipeline-step">Demo data</div>
+        <div class="pipeline-arrow">&rarr;</div>
+        <div class="pipeline-step active-step">Report</div>
+      </div>
+      <div class="card-grid" style="margin-top:1.5rem;">
+        <div class="card">
+          <h3>SKILL.md</h3>
+          <p>The contract. Defines inputs, outputs, domain decisions, safety rules. The AI reads this; it never overrides it.</p>
+        </div>
+        <div class="card">
+          <h3>Python script</h3>
+          <p>The implementation. Runs the pipeline, writes structured output. Must support <code>--demo</code> for instant testing.</p>
+        </div>
+        <div class="card">
+          <h3>Demo data</h3>
+          <p>Synthetic test data bundled with every skill. Run a demo instantly without real patient data.</p>
+        </div>
+        <div class="card">
+          <h3>Report</h3>
+          <p>Markdown + JSON. Human-readable and machine-parseable. Includes disclaimers and provenance.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: Existing skills -->
+  <div class="slide" data-n="4">
+    <div class="slide-inner">
+      <h2>Skills you can build on</h2>
+      <div class="card-grid three" style="margin-top:1rem;">
+        <div class="card">
+          <h3>Variant annotation</h3>
+          <p>VCF annotator, VEP, ClinVar, gnomAD, ACMG classification</p>
+        </div>
+        <div class="card">
+          <h3>Pharmacogenomics</h3>
+          <p>PharmGx Reporter, ClinPGx, CPIC drug-gene guidelines</p>
+        </div>
+        <div class="card">
+          <h3>GWAS + PRS</h3>
+          <p>GWAS Lookup (9 databases), PRS Calculator, SuSiE fine-mapping</p>
+        </div>
+        <div class="card">
+          <h3>Omics pipelines</h3>
+          <p>scRNA-seq orchestrator, bulk RNA-seq DE, methylation clocks</p>
+        </div>
+        <div class="card">
+          <h3>Equity + access</h3>
+          <p>HEIM equity scorer, cross-ancestry frequency comparison</p>
+        </div>
+        <div class="card">
+          <h3>Infrastructure</h3>
+          <p>Galaxy Bridge, Labstep ELN, UKB Navigator, PubMed summariser</p>
+        </div>
+      </div>
+      <p style="margin-top:1rem;">Full list: <code>python skills/bio-orchestrator/orchestrator.py --list-skills</code></p>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: Section - Challenge tracks -->
+  <div class="slide section-slide center" data-n="5">
+    <div class="slide-inner">
+      <p class="big" style="color:var(--accent2);">Challenge tracks</p>
+      <h1>Three tracks, <em>one framework</em></h1>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: Track 1 - New skill -->
+  <div class="slide" data-n="6">
+    <div class="slide-inner">
+      <h2>Track 1: New skill development</h2>
+      <p class="big bright">Add a bioinformatics skill to ClawBio.</p>
+      <p>Variant annotation, pathway analysis, clinical reporting, or your own idea. The skill must conform to the SKILL.md template and include demo data.</p>
+      <div class="callout">
+        <p><strong>Getting started:</strong></p>
+      </div>
+      <pre><code>cp templates/SKILL-TEMPLATE.md skills/your-skill/SKILL.md
+mkdir -p skills/your-skill/tests skills/your-skill/examples
+# Fill in SKILL.md, write tests, then implement</code></pre>
+      <p style="margin-top:1rem;">Judging: Does it solve a real problem? Is the SKILL.md complete? Does <code>--demo</code> work? Are there tests?</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: Track 2 - Agent workflows -->
+  <div class="slide" data-n="7">
+    <div class="slide-inner">
+      <h2>Track 2: Agent workflows</h2>
+      <p class="big bright">Chain multiple skills to solve a multi-step genomics question.</p>
+      <div class="card-grid" style="margin-top:1rem;">
+        <div class="card">
+          <h3>Example: full patient report</h3>
+          <p>VCF annotator &rarr; PharmGx Reporter &rarr; PRS Calculator &rarr; Profile Report. One genome, four skills, one unified report.</p>
+        </div>
+        <div class="card">
+          <h3>Example: GWAS to drug target</h3>
+          <p>GWAS Lookup &rarr; Fine-mapping &rarr; PubMed Summariser &rarr; ClinPGx. From association signal to actionable drug information.</p>
+        </div>
+      </div>
+      <p style="margin-top:1rem;">Use the bio-orchestrator or build your own chaining logic. The goal: a workflow that produces something neither skill could produce alone.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: Track 3 - Equity -->
+  <div class="slide" data-n="8">
+    <div class="slide-inner">
+      <h2>Track 3: Equity and access</h2>
+      <p class="big bright">Audit representation gaps in genomic datasets.</p>
+      <p>Use the <strong>HEIM equity scoring framework</strong> to measure how well a dataset, tool, or database represents diverse populations.</p>
+      <div class="card-grid" style="margin-top:1rem;">
+        <div class="card">
+          <h3>Ideas</h3>
+          <ul style="margin-bottom:0;">
+            <li>Score a public GWAS for ancestry representation</li>
+            <li>Compare PRS accuracy across populations</li>
+            <li>Audit ClinVar variant classification by ancestry</li>
+            <li>Build a dashboard showing equity gaps</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Why it matters</h3>
+          <ul style="margin-bottom:0;">
+            <li>86% of GWAS participants are European</li>
+            <li>PRS lose up to 80% accuracy in non-European populations</li>
+            <li>AI amplifies existing bias</li>
+            <li>Measurement is the first step to fixing it</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: Section - TuringDB -->
+  <div class="slide section-slide center" data-n="9">
+    <div class="slide-inner">
+      <p class="big" style="color:var(--purple);">Bonus challenge</p>
+      <h1 style="color:var(--purple);">TuringDB <em style="color:var(--purple);">Graph</em> Challenge</h1>
+      <p class="big">Additional prizes for teams using TuringDB as a graph layer</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: What is TuringDB -->
+  <div class="slide" data-n="10">
+    <div class="slide-inner">
+      <h2>What is TuringDB?</h2>
+      <p>A high-performance, in-memory graph database built in C++. Column-oriented storage, zero-lock concurrency, and git-like version control for graphs.</p>
+      <div class="stats" style="margin-top:1rem;">
+        <div class="stat"><span class="num" style="color:var(--purple);">200x</span><span class="label">faster than Neo4j on deep queries</span></div>
+        <div class="stat"><span class="num" style="color:var(--purple);">0.1ms</span><span class="label">query latency</span></div>
+        <div class="stat"><span class="num" style="color:var(--purple);">10M+</span><span class="label">node graphs</span></div>
+        <div class="stat"><span class="num" style="color:var(--purple);">8-hop</span><span class="label">queries in 476ms</span></div>
+      </div>
+      <pre style="margin-top:1rem;"><code>pip install turingdb</code></pre>
+      <p>OpenCypher query language. Python SDK. REST API. <a href="https://github.com/turing-db/turingdb" style="color:var(--purple)">github.com/turing-db/turingdb</a></p>
+    </div>
+  </div>
+
+  <!-- SLIDE 11: TuringDB challenge tracks -->
+  <div class="slide" data-n="11">
+    <div class="slide-inner">
+      <h2>Three graph directions</h2>
+      <div class="card-grid three" style="margin-top:1rem;">
+        <div class="card highlight">
+          <h3>Drug repurposing</h3>
+          <p>Use agentic AI + knowledge graphs to identify repurposed drugs. Focus on rare diseases and underrepresented patient populations.</p>
+        </div>
+        <div class="card highlight">
+          <h3>Graph-based memory</h3>
+          <p>Build a graph-powered memory layer for biomedical agents: R&amp;D, clinical research, tumour boards, and more.</p>
+        </div>
+        <div class="card highlight">
+          <h3>Multimodal KG integration</h3>
+          <p>Fuse multiomics with clinical data and knowledge graphs inside agentic workflows. Applications in cancer research.</p>
+        </div>
+      </div>
+      <div class="callout purple" style="margin-top:1rem;">
+        <p><strong>You can combine the TuringDB bonus with any of the three main tracks.</strong> Build a new skill that uses a graph backend, chain skills through a knowledge graph, or score equity across a graph of variant-population relationships.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 12: Section - Schedule -->
+  <div class="slide section-slide center" data-n="12">
+    <div class="slide-inner">
+      <p class="big" style="color:var(--accent2);">The day</p>
+      <h1>Schedule and <em>logistics</em></h1>
+    </div>
+  </div>
+
+  <!-- SLIDE 13: Schedule -->
+  <div class="slide" data-n="13">
+    <div class="slide-inner">
+      <h2>Schedule</h2>
+      <table>
+        <thead><tr><th>Time</th><th>Activity</th></tr></thead>
+        <tbody>
+          <tr><td><strong>12:00</strong></td><td>Arrival and setup</td></tr>
+          <tr><td><strong>12:30</strong></td><td>Introduction to ClawBio and challenge briefing</td></tr>
+          <tr><td><strong>13:00</strong></td><td>Team formation and hacking begins</td></tr>
+          <tr><td><strong>16:30</strong></td><td>Demos and judging</td></tr>
+          <tr><td><strong>17:30</strong></td><td>Prizes and networking</td></tr>
+          <tr><td><strong>19:00</strong></td><td>Close</td></tr>
+        </tbody>
+      </table>
+      <div class="callout">
+        <p><strong>Team formation:</strong> We will pair domain experts (biologists, clinicians) with developers. No bioinformatics experience required. Teams of 2-4.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 14: Prizes -->
+  <div class="slide" data-n="14">
+    <div class="slide-inner">
+      <h2>Prizes</h2>
+      <div class="card-grid" style="margin-top:1rem;">
+        <div class="card">
+          <h3>Best new skill</h3>
+          <p>Cleanest SKILL.md, working demo, tests pass. Solves a real bioinformatics problem.</p>
+        </div>
+        <div class="card">
+          <h3>Best agent workflow</h3>
+          <p>Most creative multi-skill chain. Produces something no single skill could.</p>
+        </div>
+        <div class="card">
+          <h3>Best equity hack</h3>
+          <p>Most impactful use of the HEIM framework. Surfaces a representation gap with data.</p>
+        </div>
+        <div class="card highlight">
+          <h3>Best TuringDB integration</h3>
+          <p>Bonus prize. Best use of TuringDB as a graph layer in any track.</p>
+        </div>
+      </div>
+      <p style="margin-top:1rem;">Details announced on the day. All winning skills will be merged into ClawBio with full attribution.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 15: What to bring -->
+  <div class="slide" data-n="15">
+    <div class="slide-inner">
+      <h2>What to bring</h2>
+      <ul>
+        <li>A laptop with <strong>Python 3.10+</strong> installed</li>
+        <li>Curiosity about genomics, AI agents, or both</li>
+        <li>No bioinformatics experience required</li>
+      </ul>
+      <h2 style="margin-top:2rem;">Setup before you arrive</h2>
+      <pre><code>git clone https://github.com/ClawBio/ClawBio.git
+cd ClawBio
+pip install -r requirements.txt
+python skills/bio-orchestrator/orchestrator.py --list-skills</code></pre>
+      <div class="callout">
+        <p><strong>Optional:</strong> <code>pip install turingdb</code> if you want to try the graph challenge.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 16: Judging criteria -->
+  <div class="slide" data-n="16">
+    <div class="slide-inner">
+      <h2>Judging criteria</h2>
+      <table>
+        <thead><tr><th>Criterion</th><th>What we look for</th><th>Weight</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Does it work?</strong></td><td><code>--demo</code> runs without errors. Output is structured and correct.</td><td>30%</td></tr>
+          <tr><td><strong>Real-world impact</strong></td><td>Solves a genuine bioinformatics or clinical problem.</td><td>25%</td></tr>
+          <tr><td><strong>SKILL.md quality</strong></td><td>Complete, follows template, gotchas documented, safety section.</td><td>20%</td></tr>
+          <tr><td><strong>Tests</strong></td><td>At least one test file. Tests pass. Edge cases considered.</td><td>15%</td></tr>
+          <tr><td><strong>Presentation</strong></td><td>Clear 3-minute demo. Explains the problem and the solution.</td><td>10%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SLIDE 17: Submission -->
+  <div class="slide" data-n="17">
+    <div class="slide-inner">
+      <h2>How to submit</h2>
+      <ol>
+        <li><strong>Fork</strong> <a href="https://github.com/ClawBio/ClawBio" style="color:var(--accent2)">ClawBio/ClawBio</a> on GitHub</li>
+        <li><strong>Create a branch</strong> named <code>hackathon/your-team-name</code></li>
+        <li><strong>Add your skill</strong> under <code>skills/your-skill-name/</code></li>
+        <li><strong>Open a PR</strong> before 16:30 with a description of what it does</li>
+        <li><strong>Demo live</strong> in 3 minutes: show the problem, run the skill, show the output</li>
+      </ol>
+      <div class="callout">
+        <p><strong>PR template:</strong> Title, track (1/2/3 + optional TuringDB), team members, one-paragraph summary, <code>--demo</code> command to reproduce.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 18: Community -->
+  <div class="slide" data-n="18">
+    <div class="slide-inner center">
+      <h2>Join the community</h2>
+      <div class="card-grid three" style="margin-top:1rem;">
+        <div class="card">
+          <h3>WhatsApp</h3>
+          <p>Questions, updates, team-finding before the event.</p>
+          <p style="margin-top:0.5rem;"><a href="https://chat.whatsapp.com/FInuUxJa00G7Ql3T28kW4I" style="color:var(--accent2)">WhatsApp Group</a></p>
+        </div>
+        <div class="card">
+          <h3>Discord</h3>
+          <p>Chat with RoboTerri, share results, get help during the hack.</p>
+          <p style="margin-top:0.5rem;"><a href="https://discord.gg/DHpmptyv" style="color:var(--accent2)">Discord Server</a></p>
+        </div>
+        <div class="card">
+          <h3>GitHub</h3>
+          <p>Star the repo, read the docs, explore existing skills.</p>
+          <p style="margin-top:0.5rem;"><a href="https://github.com/ClawBio/ClawBio" style="color:var(--accent2)">ClawBio/ClawBio</a></p>
+        </div>
+      </div>
+      <p style="margin-top:2rem;"><strong class="green" style="font-size:1.3rem;">Let's build.</strong></p>
+    </div>
+  </div>
+
+</div>
+
+<div class="controls">
+  <button id="prev" onclick="go(-1)">&larr; Prev</button>
+  <button id="next" onclick="go(1)">Next &rarr;</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+
+  function show(n) {
+    slides.forEach((s, i) => s.classList.toggle('active', i === n));
+    document.getElementById('progress').style.width = ((n + 1) / total * 100) + '%';
+    document.getElementById('counter').textContent = (n + 1) + ' / ' + total;
+    document.getElementById('prev').disabled = n === 0;
+    document.getElementById('next').disabled = n === total - 1;
+  }
+
+  function go(dir) {
+    current = Math.max(0, Math.min(total - 1, current + dir));
+    show(current);
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+    if (e.key === 'Home') { e.preventDefault(); current = 0; show(0); }
+    if (e.key === 'End') { e.preventDefault(); current = total - 1; show(current); }
+  });
+
+  let touchX = 0;
+  document.addEventListener('touchstart', e => touchX = e.touches[0].clientX);
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
+  });
+
+  show(0);
+</script>
+
+</body>
+</html>

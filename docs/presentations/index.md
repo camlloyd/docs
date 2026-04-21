@@ -4,6 +4,7 @@ A running index of every ClawBio HTML deck, ordered newest first. Click a row to
 
 | Date | Title | Context |
 |------|-------|---------|
+| 2026-04-23 | [AI Agents for Health: ClawBio Hackathon](hackathon-apr-2026/) | In-person hackathon at University of Westminster. 85 attendees. Three tracks + TuringDB graph bonus challenge. |
 | 2026-04-22 | [Agentic Genomics: Hands-on with AI for Variant Interpretation and GWAS](agentic-genomics-apr-2026/) | Virtual workshop, 743 registrants. Two sessions: Variant Interpretation + GWAS. Collaboration with Prof Segun Fatumo (QMUL/PHURI). |
 | 2026-04-18 | [The Open Standard for Biological AI Skills](shanghai-haiju-2026/) | 6th Shanghai Global Talents Innovation & Entrepreneurship Competition (Haiju Yingcai). Life and Health track. Community-driven skills, tiered validation, verification badge business model. |
 | 2026-04-15 | [Agentic Genomics: From Pipeline Automation to Autonomous Validation](kcl-scgg-agentic-genomics-2026/) | SCGG Away Day, King's College London. Family WGS case study with tiered validation framework. [YouTube](https://www.youtube.com/watch?v=ka0EHQkQ2kI) &#183; [Podcast](https://manuelcorpas.github.io/podcast/) |
