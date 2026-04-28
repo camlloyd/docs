@@ -4,7 +4,6 @@ A running index of every ClawBio HTML deck, ordered newest first. Click a row to
 
 | Date | Title | Context |
 |------|-------|---------|
-| 2026-04-29 | [The Future of Biology Is Agentic](imperial-future-of-biology-2026/) | UK DRI seminar, Imperial College London. 25-min talk on skill libraries for clinical-grade agentic genomics. New Briefings in Bioinformatics benchmark of 9 frontier LLMs on pharmacogenomics: 92.4% to 100% phenotype accuracy with ClawBio specifications, zero DPYD lethal-case errors, population-equity gap eliminated. CYP2D6 / donepezil bridge for dementia care. |
 | 2026-04-23 | [AI Agents for Health: ClawBio Hackathon](hackathon-apr-2026/) | In-person hackathon at University of Westminster. 85 attendees. Three tracks + TuringDB graph bonus challenge. |
 | 2026-04-22 | [Agentic Genomics: Hands-on with AI for Variant Interpretation and GWAS](agentic-genomics-apr-2026/) | Virtual workshop, 743 registrants. Two sessions: Variant Interpretation + GWAS. Collaboration with Prof Segun Fatumo (QMUL/PHURI). |
 | 2026-04-18 | [The Open Standard for Biological AI Skills](shanghai-haiju-2026/) | 6th Shanghai Global Talents Innovation & Entrepreneurship Competition (Haiju Yingcai). Life and Health track. Community-driven skills, tiered validation, verification badge business model. |
