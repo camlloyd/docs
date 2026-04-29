@@ -143,25 +143,46 @@ code { font-family: 'SF Mono', 'Fira Code', monospace; color: #56d364; backgroun
 <section class="slide">
     <div class="section-label">Definition</div>
     <h2>Defining <span class="green">Agentic Genomics</span></h2>
-    <p style="max-width:85%; margin-bottom:1.2rem; font-style:italic; color:#adbac7;">
-        "The use of autonomous AI agents, powered by large language models and operating within domain-constrained skill libraries, to discover, plan, execute, and iteratively refine multi-step genomic analyses, where the agent exercises runtime decision-making over tool selection, parameterisation, error handling, and output evaluation."
-    </p>
-    <div class="three-col content">
-        <div class="card" style="border-color:#56d364;">
-            <h3 class="green">1. Autonomy</h3>
-            <p>Decisions during execution, not a static workflow specification.</p>
-        </div>
-        <div class="card" style="border-color:#58a6ff;">
-            <h3 class="accent">2. Domain constraint</h3>
-            <p>Operates within a structured library of validated skills, not ad hoc code.</p>
-        </div>
-        <div class="card" style="border-color:#e3b341;">
-            <h3 class="orange">3. Iterative refinement</h3>
-            <p>Evaluates intermediate results, modifies its approach, recovers from errors.</p>
-        </div>
-    </div>
-    <p class="small gap" style="max-width:80%;">Plus a fourth: <span class="accent">natural-language mediation</span>. The four conditions are jointly necessary. <span class="green">Empirically falsifiable</span> via the perturbation test: a system fails to qualify as agentic if perturbed intermediate outputs do not alter its execution strategy.</p>
+    <svg viewBox="0 0 1000 540" style="width: 90%; max-width: 1000px; height: auto; max-height: 64vh; display: block; margin: 0.4rem auto 0.4rem;" xmlns="http://www.w3.org/2000/svg">
+        <!-- connector lines -->
+        <line x1="500" y1="270" x2="500" y2="100" stroke="#30363d" stroke-width="1.5"/>
+        <line x1="500" y1="270" x2="500" y2="440" stroke="#30363d" stroke-width="1.5"/>
+        <line x1="500" y1="270" x2="190" y2="270" stroke="#30363d" stroke-width="1.5"/>
+        <line x1="500" y1="270" x2="810" y2="270" stroke="#30363d" stroke-width="1.5"/>
+        <!-- center hub -->
+        <circle cx="500" cy="270" r="95" fill="#161b22" stroke="#56d364" stroke-width="2.5"/>
+        <text x="500" y="262" text-anchor="middle" fill="#e6edf3" font-family="Segoe UI, sans-serif" font-size="18" font-weight="700">AGENTIC</text>
+        <text x="500" y="288" text-anchor="middle" fill="#56d364" font-family="Segoe UI, sans-serif" font-size="18" font-weight="700">GENOMICS</text>
+        <!-- 1. Autonomy (top, green) -->
+        <rect x="320" y="20" width="360" height="80" rx="10" fill="#161b22" stroke="#56d364" stroke-width="2"/>
+        <text x="500" y="48" text-anchor="middle" fill="#56d364" font-family="Segoe UI, sans-serif" font-size="17" font-weight="700">1. Autonomy</text>
+        <text x="500" y="74" text-anchor="middle" fill="#adbac7" font-family="Segoe UI, sans-serif" font-size="13">Decisions during execution,</text>
+        <text x="500" y="91" text-anchor="middle" fill="#adbac7" font-family="Segoe UI, sans-serif" font-size="13">not a static workflow.</text>
+        <!-- 2. Domain constraint (right, blue) -->
+        <rect x="630" y="220" width="350" height="100" rx="10" fill="#161b22" stroke="#58a6ff" stroke-width="2"/>
+        <text x="805" y="248" text-anchor="middle" fill="#58a6ff" font-family="Segoe UI, sans-serif" font-size="17" font-weight="700">2. Domain constraint</text>
+        <text x="805" y="274" text-anchor="middle" fill="#adbac7" font-family="Segoe UI, sans-serif" font-size="13">Structured library of validated</text>
+        <text x="805" y="291" text-anchor="middle" fill="#adbac7" font-family="Segoe UI, sans-serif" font-size="13">skills, not ad hoc code.</text>
+        <!-- 3. Iterative refinement (bottom, orange) -->
+        <rect x="320" y="440" width="360" height="80" rx="10" fill="#161b22" stroke="#e3b341" stroke-width="2"/>
+        <text x="500" y="468" text-anchor="middle" fill="#e3b341" font-family="Segoe UI, sans-serif" font-size="17" font-weight="700">3. Iterative refinement</text>
+        <text x="500" y="494" text-anchor="middle" fill="#adbac7" font-family="Segoe UI, sans-serif" font-size="13">Evaluates intermediate results,</text>
+        <text x="500" y="511" text-anchor="middle" fill="#adbac7" font-family="Segoe UI, sans-serif" font-size="13">recovers from errors.</text>
+        <!-- 4. Natural-language mediation (left, purple) -->
+        <rect x="20" y="220" width="350" height="100" rx="10" fill="#161b22" stroke="#d2a8ff" stroke-width="2"/>
+        <text x="195" y="248" text-anchor="middle" fill="#d2a8ff" font-family="Segoe UI, sans-serif" font-size="17" font-weight="700">4. Natural-language mediation</text>
+        <text x="195" y="274" text-anchor="middle" fill="#adbac7" font-family="Segoe UI, sans-serif" font-size="13">Researcher describes intent;</text>
+        <text x="195" y="291" text-anchor="middle" fill="#adbac7" font-family="Segoe UI, sans-serif" font-size="13">agent translates to execution.</text>
+    </svg>
+    <p class="small" style="max-width:75%; margin-top:0.3rem; text-align:center;">Jointly necessary. <span class="green">Falsifiable</span> via the <em>perturbation test</em>: an agent that ignores perturbed intermediate outputs is not agentic.</p>
     <div class="notes">
+        Full definition (delivered verbally): "The use of autonomous AI agents,
+        powered by large language models and operating within domain-constrained
+        skill libraries, to discover, plan, execute, and iteratively refine
+        multi-step genomic analyses, where the agent exercises runtime
+        decision-making over tool selection, parameterisation, error handling,
+        and output evaluation."
+
         These four conditions are deliberately strict. They exclude workflow
         automation (Nextflow, Snakemake, Galaxy, no runtime decisions). They
         exclude AutoML (search within a fixed space). They exclude LLM-assisted
