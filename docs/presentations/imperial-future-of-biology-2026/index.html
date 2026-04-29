@@ -214,18 +214,26 @@ code { font-family: 'SF Mono', 'Fira Code', monospace; color: #56d364; backgroun
 <section class="slide">
     <div class="section-label">The new bottleneck</div>
     <h2>The Validation Bottleneck: <span class="red">Silent, Plausible-Looking Failure</span></h2>
-    <ul style="max-width:85%;">
-        <li>AI agents produce results <span class="red">faster than humans can verify them</span>. New class of risk: high-throughput, low-validation science.</li>
-        <li>Documented failure modes across independent systems:
-            <ul style="margin-top:0.3rem;">
-                <li>AutoBA: pipelines omitting critical steps, wrong tool for data type.</li>
-                <li>Single-cell agents: incomplete experimental designs, inconsistent recommendations for identical queries.</li>
-                <li>Boiko et al. (Nature 2023): syntactically correct, scientifically invalid protocols passing basic execution checks.</li>
-                <li>ClawBio early audit: a skill silently returned <span class="red">"all normal" results for 51 drugs</span> when given an empty input file.</li>
-            </ul>
-        </li>
-        <li>The pattern: <span class="highlight">silent degradation to plausible-looking but incorrect results</span>.</li>
-    </ul>
+    <p style="max-width:80%; text-align:center; color:#adbac7; margin-bottom:1.2rem;">AI agents produce results <span class="red">faster than humans can verify them</span>.</p>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.2vw 1.6vw; width:88%; max-width:1100px;">
+        <div class="card" style="border-color:#ffa198; text-align:left;">
+            <div style="font-family:'SF Mono',monospace; font-size:clamp(0.7rem,1.05vw,0.85rem); color:#ffa198; letter-spacing:0.08em; margin-bottom:0.4em;">AUTOBA</div>
+            <p style="text-align:left; color:#adbac7;">Pipelines omitted critical steps; wrong tool selected for the data type.</p>
+        </div>
+        <div class="card" style="border-color:#ffa198; text-align:left;">
+            <div style="font-family:'SF Mono',monospace; font-size:clamp(0.7rem,1.05vw,0.85rem); color:#ffa198; letter-spacing:0.08em; margin-bottom:0.4em;">SINGLE-CELL AGENTS</div>
+            <p style="text-align:left; color:#adbac7;">Incomplete experimental designs; inconsistent recommendations for identical queries.</p>
+        </div>
+        <div class="card" style="border-color:#ffa198; text-align:left;">
+            <div style="font-family:'SF Mono',monospace; font-size:clamp(0.7rem,1.05vw,0.85rem); color:#ffa198; letter-spacing:0.08em; margin-bottom:0.4em;">BOIKO ET AL. &middot; NATURE 2023</div>
+            <p style="text-align:left; color:#adbac7;">Syntactically correct, scientifically invalid protocols passing basic execution checks.</p>
+        </div>
+        <div class="card" style="border-color:#ffa198; text-align:left;">
+            <div style="font-family:'SF Mono',monospace; font-size:clamp(0.7rem,1.05vw,0.85rem); color:#ffa198; letter-spacing:0.08em; margin-bottom:0.4em;">CLAWBIO EARLY AUDIT</div>
+            <p style="text-align:left; color:#adbac7;">A skill silently returned <span class="red">"all normal" for 51 drugs</span> on an empty input file.</p>
+        </div>
+    </div>
+    <p style="max-width:80%; text-align:center; margin-top:1.4rem; font-size:clamp(1rem,1.6vw,1.3rem);"><span class="highlight">Silent degradation to plausible-looking but incorrect results.</span></p>
     <div class="notes">
         Each of these is from an independently developed system. The convergence is
         the point: this is structural, not a one-off bug. The 51-drug ClawBio
@@ -267,17 +275,33 @@ code { font-family: 'SF Mono', 'Fira Code', monospace; color: #56d364; backgroun
             <text x="20" y="14" fill="#adbac7" font-family="Segoe UI, sans-serif" font-size="12" font-weight="600">Validation rigour, consequence of error &#x2192;</text>
         </svg>
         <div class="three-col" style="margin-top: 0.4rem;">
-            <div class="card" style="border-color: #56d364;">
-                <h3 class="green">Research-grade</h3>
-                <p>Hypothesis exploration, exploratory analysis. Unit tests, adversarial inputs, minimal logging, all outputs reviewed. False positives tolerable if caught.</p>
+            <div class="card" style="border-color: #56d364; text-align:left;">
+                <h3 class="green" style="text-align:left;">Research-grade</h3>
+                <ul style="font-size:clamp(0.78rem,1.15vw,1rem); color:#adbac7; max-width:100%; margin:0;">
+                    <li>Hypothesis exploration</li>
+                    <li>Unit tests, adversarial inputs</li>
+                    <li>All outputs reviewed</li>
+                    <li>False positives tolerable</li>
+                </ul>
             </div>
-            <div class="card" style="border-color: #58a6ff;">
-                <h3 class="accent">Benchmarked</h3>
-                <p>Publishable analyses, method comparison. Validated on public references (GIAB for variant calling, curated scRNA-seq benchmarks). Independent benchmarking, published metrics, documented failure modes.</p>
+            <div class="card" style="border-color: #58a6ff; text-align:left;">
+                <h3 class="accent" style="text-align:left;">Benchmarked</h3>
+                <ul style="font-size:clamp(0.78rem,1.15vw,1rem); color:#adbac7; max-width:100%; margin:0;">
+                    <li>Publishable analyses</li>
+                    <li>Public references (GIAB, scRNA-seq)</li>
+                    <li>Independent benchmarking</li>
+                    <li>Published metrics &amp; failure modes</li>
+                </ul>
             </div>
-            <div class="card" style="border-color: #d2a8ff;">
-                <h3 class="purple">Clinical-grade</h3>
-                <p>Patient care, diagnostic reporting, pharmacogenomics. External multi-site validation, FDA/EMA alignment, signed reproducibility bundles, BioCompute Objects, version-locked dependencies. CLIA/CAP compliance.</p>
+            <div class="card" style="border-color: #d2a8ff; text-align:left;">
+                <h3 class="purple" style="text-align:left;">Clinical-grade</h3>
+                <ul style="font-size:clamp(0.78rem,1.15vw,1rem); color:#adbac7; max-width:100%; margin:0;">
+                    <li>Patient care, diagnostic reporting</li>
+                    <li>External multi-site validation</li>
+                    <li>FDA/EMA alignment</li>
+                    <li>Signed reproducibility bundles</li>
+                    <li>CLIA/CAP compliance</li>
+                </ul>
             </div>
         </div>
         <p class="gap center" style="margin-top: 1.5rem;">
