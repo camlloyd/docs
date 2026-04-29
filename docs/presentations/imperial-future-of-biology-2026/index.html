@@ -439,19 +439,47 @@ code { font-family: 'SF Mono', 'Fira Code', monospace; color: #56d364; backgroun
 <section class="slide">
     <div class="section-label">Implication</div>
     <h2>Equity Must Be <span class="green">Engineered</span>, Not Declared</h2>
-    <ul style="max-width:85%;">
-        <li><span class="accent">Equity-aware default configurations.</span> Skills query population-stratified frequency databases (gnomAD stratifications, AfriCArGene) instead of aggregate European-dominated frequencies.</li>
-        <li><span class="accent">Population-aware model selection.</span> Skill metadata declares which populations the underlying models were validated against; agents flag or refuse out-of-scope use.</li>
-        <li><span class="accent">Bias detection at execution.</span> Population-mismatch signals (anomalous PCA projections, calibration failures) as automated QC, analogous to standard sequencing QC.</li>
-        <li><span class="accent">Measurable equity metrics.</span> Skill registries report (i) population composition of validation sets, (ii) ancestry-stratified performance, (iii) proportion of skills validated on non-European populations.</li>
-    </ul>
-    <p class="small gap" style="max-width:85%;">A skill that performs well on European-ancestry data but has not been evaluated on African or Latin American populations <span class="highlight">should not be considered fully validated</span>, regardless of its technical performance on the populations it has been tested against.</p>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 1.4vw 2vw; width: 88%; max-width: 1100px; margin-top: 0.8rem;">
+        <div class="card" style="border-color:#58a6ff; text-align:left;">
+            <div style="display:flex; align-items:center; gap:0.7em; margin-bottom:0.4em;">
+                <svg width="34" height="34" viewBox="0 0 40 40"><rect x="6" y="22" width="6" height="12" fill="#58a6ff"/><rect x="17" y="14" width="6" height="20" fill="#56d364"/><rect x="28" y="6" width="6" height="28" fill="#e3b341"/></svg>
+                <h3 style="color:#58a6ff; margin:0; font-size:clamp(1rem,1.5vw,1.25rem); text-align:left;">Equity-aware defaults</h3>
+            </div>
+            <p style="text-align:left; color:#adbac7;">Skills query population-stratified frequency databases, not European aggregates.</p>
+        </div>
+        <div class="card" style="border-color:#58a6ff; text-align:left;">
+            <div style="display:flex; align-items:center; gap:0.7em; margin-bottom:0.4em;">
+                <svg width="34" height="34" viewBox="0 0 40 40"><circle cx="20" cy="20" r="13" fill="none" stroke="#58a6ff" stroke-width="2"/><circle cx="20" cy="9" r="3" fill="#56d364"/><circle cx="11" cy="25" r="3" fill="#e3b341"/><circle cx="29" cy="25" r="3" fill="#d2a8ff"/></svg>
+                <h3 style="color:#58a6ff; margin:0; font-size:clamp(1rem,1.5vw,1.25rem); text-align:left;">Population-aware models</h3>
+            </div>
+            <p style="text-align:left; color:#adbac7;">Skill metadata declares validated populations; agents refuse out-of-scope use.</p>
+        </div>
+        <div class="card" style="border-color:#58a6ff; text-align:left;">
+            <div style="display:flex; align-items:center; gap:0.7em; margin-bottom:0.4em;">
+                <svg width="34" height="34" viewBox="0 0 40 40"><circle cx="17" cy="17" r="9" fill="none" stroke="#58a6ff" stroke-width="2"/><line x1="24" y1="24" x2="34" y2="34" stroke="#58a6ff" stroke-width="3" stroke-linecap="round"/><circle cx="17" cy="17" r="3" fill="#ffa198"/></svg>
+                <h3 style="color:#58a6ff; margin:0; font-size:clamp(1rem,1.5vw,1.25rem); text-align:left;">Bias detection at runtime</h3>
+            </div>
+            <p style="text-align:left; color:#adbac7;">Population mismatch (anomalous PCA, calibration failures) flagged as automated QC.</p>
+        </div>
+        <div class="card" style="border-color:#58a6ff; text-align:left;">
+            <div style="display:flex; align-items:center; gap:0.7em; margin-bottom:0.4em;">
+                <svg width="34" height="34" viewBox="0 0 40 40"><path d="M6 20 A14 14 0 0 1 34 20" fill="none" stroke="#30363d" stroke-width="3"/><path d="M6 20 A14 14 0 0 1 27 9" fill="none" stroke="#56d364" stroke-width="3"/><circle cx="20" cy="20" r="2" fill="#e6edf3"/><line x1="20" y1="20" x2="29" y2="13" stroke="#e6edf3" stroke-width="2" stroke-linecap="round"/></svg>
+                <h3 style="color:#58a6ff; margin:0; font-size:clamp(1rem,1.5vw,1.25rem); text-align:left;">Measurable equity metrics</h3>
+            </div>
+            <p style="text-align:left; color:#adbac7;">Skill registries report validation set composition and ancestry-stratified performance.</p>
+        </div>
+    </div>
+    <p class="gap" style="max-width:80%; text-align:center; margin-top:1.2rem;">Validated on European-ancestry data alone <span class="highlight">is not validated</span>.</p>
     <div class="notes">
         Equity becomes a first-class validation criterion alongside accuracy and
         reproducibility. The benchmark's population dimension is a worked example
         of this. We argue this is structural: the absence of equity-aware design
         should be treated with the same seriousness as the absence of input
-        validation. TIMING: 2 min.
+        validation. The four cards: equity-aware defaults, population-aware
+        models, bias detection at runtime, measurable equity metrics. Closing
+        line: a skill that performs well on European-ancestry data but has not
+        been evaluated on African or Latin American populations should not be
+        considered fully validated. TIMING: 2 min.
     </div>
 </section>
 
