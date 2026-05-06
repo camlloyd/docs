@@ -161,29 +161,7 @@ ul.tight li { margin-bottom:0.45rem; line-height:1.6; }
   </div>
 </div>
 
-<!-- SLIDE 4: THE SIDRA + QBB ADVANTAGE -->
-<div class="slide">
-  <div class="label">Why This Lands at Sidra</div>
-  <h2 class="title">Sidra+QBB has the one ingredient European centres lack: <span class="em">an ancestry-matched control reference, already collected.</span></h2>
-  <div class="grid-2">
-    <div class="card">
-      <div class="num blue">~12,000</div>
-      <div class="lbl">QBB PAXgene blood RNA-seq</div>
-      <div class="desc">Already in QBB phase 2. Gulf-ancestry. Population scale that no other rare-disease centre has access to.</div>
-    </div>
-    <div class="card">
-      <div class="num green">Sidra cases</div>
-      <div class="lbl">paediatric clinical referrals</div>
-      <div class="desc">WGS-negative or WGS-VUS. Existing clinical genomics workflow. NovaSeq + SLURM cluster in place.</div>
-    </div>
-  </div>
-  <div class="callout">
-    <div class="title">The publishable angle</div>
-    OUTRIDER and FRASER2 today are trained on European-biased reference panels. A Gulf-ancestry blood-RNA outlier reference panel does not exist. Building it and quantifying the ancestry penalty in current rare-disease RNA-seq diagnostics is a HEIM-aligned paper that lands in <em>Genome Medicine</em> or <em>AJHG</em>, independent of the diagnostic yield gain.
-  </div>
-</div>
-
-<!-- SLIDE 5: LIVE DEMO -->
+<!-- SLIDE 4: LIVE DEMO -->
 <div class="slide">
   <div class="label">Live Demo</div>
   <h2 class="title">One command. <span class="em">End-to-end in seconds.</span></h2>
@@ -207,7 +185,7 @@ Report: rdoutlier_report/report.md <span class="ok">[OK]</span>
   </div>
 </div>
 
-<!-- SLIDE 6: RESULT -->
+<!-- SLIDE 5: RESULT -->
 <div class="slide">
   <div class="label">Result</div>
   <h2 class="title">Both injected outliers detected. <span class="em">Background gene noise filtered out.</span></h2>
@@ -225,7 +203,7 @@ Report: rdoutlier_report/report.md <span class="ok">[OK]</span>
   </div>
 </div>
 
-<!-- SLIDE 7: DEMO -> PRODUCTION -->
+<!-- SLIDE 6: DEMO TO PRODUCTION -->
 <div class="slide">
   <div class="label">Demo &rarr; Production</div>
   <h2 class="title">Same skill. <span class="em">Swap the components.</span></h2>
@@ -245,56 +223,7 @@ Report: rdoutlier_report/report.md <span class="ok">[OK]</span>
   </table>
 </div>
 
-<!-- SLIDE 8: WHY PUBLISHABLE -->
-<div class="slide">
-  <div class="label">Why It Is Publishable</div>
-  <h2 class="title">Two papers, not one.</h2>
-  <div class="grid-2">
-    <div class="card">
-      <div class="num blue">Paper 1</div>
-      <div class="lbl">Sidra paediatric pilot</div>
-      <div class="desc">Diagnostic yield in WGS-negative paediatric cases at Sidra, with QBB controls. Realistic prior: yield exceeds the GE benchmark of 6.8% because recessive LoF events in a consanguineous population produce cleaner expression-collapse signals.</div>
-    </div>
-    <div class="card">
-      <div class="num green">Paper 2</div>
-      <div class="lbl">First Gulf-ancestry RNA reference panel</div>
-      <div class="desc">Quantify the ancestry penalty in OUTRIDER / FRASER2 calls when European-trained vs Gulf-trained. HEIM-aligned. Independent of yield. Lands in <em>Genome Medicine</em> or <em>AJHG</em>.</div>
-    </div>
-  </div>
-  <div class="callout">
-    <div class="title">Open-science upside</div>
-    Releasing the Gulf reference panel under controlled-access (DUO terms) makes Sidra+QBB the default reference partner for any future Gulf rare-disease RNA programme, including Saudi GHA, KAUST, MBRU.
-  </div>
-</div>
-
-<!-- SLIDE 9: THE PILOT -->
-<div class="slide">
-  <div class="label">The Ask: 12-Month Pilot</div>
-  <h2 class="title">Small, scoped, decision-gated.</h2>
-  <div class="grid-3">
-    <div class="card">
-      <div class="num">100</div>
-      <div class="lbl">paediatric cases</div>
-      <div class="desc">Sidra WGS-negative or WGS-VUS rare-disease referrals with paired blood PAXgene draw.</div>
-    </div>
-    <div class="card">
-      <div class="num">1.5</div>
-      <div class="lbl">FTE</div>
-      <div class="desc">1 RA + 0.5 clinical bioinformatician. No new headcount beyond the immediate pilot team.</div>
-    </div>
-    <div class="card">
-      <div class="num">0</div>
-      <div class="lbl">new infrastructure</div>
-      <div class="desc">Existing Sidra SLURM cluster, existing QBB sample bank, existing MDT review process.</div>
-    </div>
-  </div>
-  <div class="callout">
-    <div class="title">Decision gate at 12 months</div>
-    Yield + reference-panel benchmark in hand. Scale to 1,000 paediatric + 500 adult, or sunset cleanly.
-  </div>
-</div>
-
-<!-- SLIDE 10: HONEST LIMITS -->
+<!-- SLIDE 7: HONEST LIMITS -->
 <div class="slide">
   <div class="label">Honest Limits</div>
   <h2 class="title">What we will not pretend.</h2>
@@ -303,10 +232,6 @@ Report: rdoutlier_report/report.md <span class="ok">[OK]</span>
     <p><span class="tag warn">Tissue ceiling</span> Blood expresses ~70% of disease genes. Conditions with brain-, muscle-, liver-restricted expression are missed. The pilot does not claim to replace tissue biopsies.</p>
     <p><span class="tag warn">Algorithm gap</span> Today's demo uses robust z-scoring (the diagnostic principle, runnable in seconds). Clinical-grade calls require the full DROP pipeline with confounder correction. Both are open source. The swap is configuration, not research.</p>
     <p><span class="tag red">Off-target outliers</span> ~0.5 false-positive outliers per case at z &ge; 3 with 200 genes screened. Disease-panel filter removes most; MDT review handles the rest. Same constraint as the GE NGRL paper.</p>
-  </div>
-  <div class="callout" style="margin-top:1.5rem">
-    <div class="title">Next step from this meeting</div>
-    Confirm interest. Identify Sidra paediatric clinical-genomics PI counterpart. Draft IRB scope. Spin up a 4-week feasibility on 5 cases with manually curated controls before committing to the full pilot.
   </div>
 </div>
 
