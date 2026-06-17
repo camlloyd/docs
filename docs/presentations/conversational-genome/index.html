@@ -168,6 +168,11 @@
   .audit-panel{margin:7px 0 2px;padding:10px 12px;border:1px dashed var(--border);border-radius:9px;background:rgba(0,0,0,.22);font-size:.73rem;font-family:ui-monospace,Menlo,monospace;color:var(--dim);line-height:1.75}
   .audit-panel b{color:var(--mut)} .audit-panel code{color:var(--green);background:rgba(86,211,100,.08);padding:1px 6px;border-radius:5px}
   .audit-panel .ax-note{color:var(--green);margin-top:4px;font-family:var(--font)}
+
+  .livebanner{display:inline-flex;align-items:center;gap:7px;font-size:.72rem;font-weight:700;color:#06121f;background:var(--green);padding:4px 11px;border-radius:999px;margin:0 0 9px}
+  .livebanner .ldot{width:7px;height:7px;border-radius:50%;background:#06121f;animation:cgpulse 1.2s infinite}
+  @keyframes cgpulse{0%,100%{opacity:1}50%{opacity:.25}}
+  #livestat.live{color:var(--green);font-weight:700} #livestat.live::before{content:"\25cf "}
 </style>
 </head>
 <body>
@@ -206,6 +211,7 @@
       <span class="k">variants</span> <b>576,517</b>
       <span class="k">licence</span> <b>CC0</b>
       <span class="k">doi</span> <a href="https://doi.org/10.6084/m9.figshare.693052" target="_blank" rel="noopener">10.6084/m9.figshare.693052</a>
+      <span class="k">backend</span> <b id="livestat" class="dim">static</b>
     </div>
 
     <div class="shell">
@@ -838,7 +844,32 @@ const GENOME = {
     botMsg('<div class="card"><div class="interp">Answers come from real genotypes, executed by a versioned skill, so the system is precise about what it can and cannot say. Try a drug name (warfarin, clopidogrel, statins, codeine), a topic (caffeine, alcohol, ancestry), or ask <b>what is most actionable</b> or <b>show me the audit trail</b>.</div></div>');
   }
 
-  function ask(text){ if(!text.trim())return; userMsg(text); setTimeout(()=>answer(text),260); }
+  // live backend: each finding question executes the real ClawBio skill via /api/run.
+  // Falls back to the embedded skill output when no backend is reachable.
+  const DRUG_OF={warfarin:"warfarin",clopidogrel:"clopidogrel",statins:"simvastatin",codeine:"codeine",fluoropyrimidines:"capecitabine",efavirenz:"efavirenz",caffeine:null};
+  const LVL={avoid:"avoid",caution:"caution",standard:"standard",indeterminate:"unresolved"};
+  let LIVE=false;
+  const HEALTH=fetch('api/health').then(r=>r.ok?r.json():Promise.reject()).then(()=>{LIVE=true;const el=document.getElementById('livestat');if(el){el.textContent='live';el.className='live';}}).catch(()=>{});
+  function applyLive(f,live){
+    const gp=live.gene_profiles||{};
+    const genes=f.genes.map(g=>{const lp=gp[g.gene];return lp?Object.assign({},g,{genotype:lp.diplotype,call:lp.phenotype}):g;});
+    let level=f.level; const drug=DRUG_OF[f.id];
+    if(drug&&live.drug_levels&&live.drug_levels[drug])level=LVL[live.drug_levels[drug]]||f.level;
+    return Object.assign({},f,{genes:genes,level:level});
+  }
+  function liveBadge(live){return '<div class="livebanner"><span class="ldot"></span>executed live by ClawBio '+esc(live.skill)+' v'+esc(live.version)+' in '+live.elapsed_ms+' ms</div>';}
+  async function ask(text){
+    if(!text.trim())return; userMsg(text);
+    await HEALTH;
+    const r=route(text);
+    if(LIVE && r.type==="finding"){
+      try{
+        const resp=await fetch('api/run',{method:'POST'});
+        if(resp.ok){const live=await resp.json(); botMsg(liveBadge(live)+findingCard(applyLive(findById(r.id),live))); return;}
+      }catch(e){}
+    }
+    setTimeout(()=>answer(text),180);
+  }
 
   // suggested chips
   GENOME.suggested.forEach(s=>{
