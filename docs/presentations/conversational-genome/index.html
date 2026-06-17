@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conversational Genome — The Operating System for Personal Genomics</title>
+<meta property="og:title" content="Conversational Genome">
+<meta property="og:description" content="Your genome is not a PDF. It is a lifelong, evidence-based conversation. A live demo on a real, openly published genome.">
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#11161d; --border:#30363d;
+    --tx:#e6edf3; --mut:#adbac7; --dim:#6e7681;
+    --green:#56d364; --blue:#58a6ff; --red:#ffa198; --hot:#f85149;
+    --orange:#e3b341; --purple:#d2a8ff;
+    --font:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--tx);font-family:var(--font);line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:var(--blue);text-decoration:none}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 22px}
+  .green{color:var(--green)} .blue{color:var(--blue)} .red{color:var(--red)}
+  .orange{color:var(--orange)} .purple{color:var(--purple)} .mut{color:var(--mut)} .dim{color:var(--dim)}
+
+  /* hero */
+  header.hero{padding:80px 0 36px;text-align:center}
+  .eyebrow{display:inline-block;font-size:.74rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--blue);background:rgba(88,166,255,.12);border:1px solid rgba(88,166,255,.35);padding:6px 14px;border-radius:999px}
+  h1{font-size:clamp(2.1rem,5.4vw,3.7rem);line-height:1.05;margin:.5em 0 .25em;letter-spacing:-.02em}
+  .sub{font-size:clamp(1.05rem,2.2vw,1.4rem);color:var(--mut);max-width:760px;margin:0 auto}
+  .hero-meta{margin-top:22px;color:var(--dim);font-size:.92rem}
+  .scroll-cue{margin-top:30px;color:var(--dim);font-size:.85rem}
+
+  /* demo */
+  section.demo{padding:26px 0 60px}
+  .demo-head{text-align:center;margin-bottom:18px}
+  .demo-head h2{font-size:clamp(1.5rem,3vw,2.1rem);margin:.2em 0}
+  .genome-bar{display:flex;flex-wrap:wrap;gap:10px 18px;justify-content:center;align-items:center;
+    background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:12px 18px;margin:0 auto 16px;max-width:920px;font-size:.82rem}
+  .genome-bar b{color:var(--tx)} .genome-bar .k{color:var(--dim)}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block;box-shadow:0 0 0 3px rgba(86,211,100,.18)}
+
+  .shell{max-width:920px;margin:0 auto;background:var(--panel2);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+  .transcript{padding:20px;min-height:300px;max-height:62vh;overflow-y:auto}
+  .msg{margin:0 0 16px;animation:rise .28s ease both}
+  @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .msg.user{display:flex;justify-content:flex-end}
+  .msg.user .bubble{background:var(--blue);color:#06121f;font-weight:600;padding:10px 15px;border-radius:14px 14px 4px 14px;max-width:80%}
+  .msg.bot .who{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:13px;padding:16px 18px;border-left:4px solid var(--dim)}
+  .card.standard{border-left-color:var(--green)} .card.caution{border-left-color:var(--orange)}
+  .card.avoid{border-left-color:var(--hot)} .card.unresolved{border-left-color:var(--purple)} .card.trait{border-left-color:var(--blue)}
+  .card .row1{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+  .card h3{margin:0;font-size:1.06rem}
+  .badge{font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px;white-space:nowrap}
+  .b-standard{color:var(--green);background:rgba(86,211,100,.13);border:1px solid rgba(86,211,100,.4)}
+  .b-caution{color:var(--orange);background:rgba(227,179,65,.13);border:1px solid rgba(227,179,65,.4)}
+  .b-avoid{color:var(--hot);background:rgba(248,81,73,.14);border:1px solid rgba(248,81,73,.45)}
+  .b-unresolved{color:var(--purple);background:rgba(210,168,255,.12);border:1px solid rgba(210,168,255,.4)}
+  .b-trait{color:var(--blue);background:rgba(88,166,255,.12);border:1px solid rgba(88,166,255,.4)}
+  .headline{margin:.5em 0 .2em;font-weight:600}
+  .genes{margin:12px 0;border:1px solid var(--border);border-radius:9px;overflow:hidden}
+  .gene-row{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;padding:9px 12px;background:rgba(255,255,255,.02);font-size:.86rem;border-top:1px solid var(--border)}
+  .gene-row:first-child{border-top:none}
+  .gene-row .g{font-weight:700;color:var(--tx)} .gene-row .geno{color:var(--blue);font-variant-numeric:tabular-nums}
+  .gene-row .rs{grid-column:1/-1;color:var(--dim);font-size:.78rem;font-family:ui-monospace,Menlo,monospace}
+  .gene-row .eff{grid-column:1/-1;color:var(--mut);font-size:.82rem}
+  .interp{font-size:.92rem;color:var(--tx);margin:.4em 0}
+  .meta-line{display:flex;gap:8px;align-items:baseline;font-size:.82rem;margin:.35em 0;color:var(--mut)}
+  .meta-line .lab{color:var(--dim);min-width:96px;flex-shrink:0;text-transform:uppercase;font-size:.68rem;letter-spacing:.08em;padding-top:2px}
+  .conf{display:inline-block;font-weight:700;font-size:.74rem;padding:2px 8px;border-radius:6px}
+  .conf.high{color:var(--green);background:rgba(86,211,100,.13)} .conf.moderate{color:var(--orange);background:rgba(227,179,65,.13)} .conf.low{color:var(--purple);background:rgba(210,168,255,.13)}
+  .evidence{margin:.5em 0 0;padding-left:1.1em} .evidence li{font-size:.8rem;color:var(--mut);margin:2px 0}
+  .prov{margin-top:12px;padding-top:10px;border-top:1px dashed var(--border);font-size:.72rem;color:var(--dim);font-family:ui-monospace,Menlo,monospace;word-break:break-all}
+  .prov b{color:var(--mut)}
+
+  .equity-grid{display:flex;gap:10px;margin:12px 0}
+  .equity-grid .e{flex:1;text-align:center;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:9px;padding:12px}
+  .equity-grid .e .n{font-size:1.5rem;font-weight:800} .equity-grid .e .l{font-size:.74rem;color:var(--mut)}
+
+  .chips{display:flex;flex-wrap:wrap;gap:8px;padding:14px 18px;border-top:1px solid var(--border);background:rgba(255,255,255,.015)}
+  .chip{font-size:.82rem;color:var(--mut);background:var(--panel);border:1px solid var(--border);border-radius:999px;padding:7px 13px;cursor:pointer;transition:.15s}
+  .chip:hover{color:var(--tx);border-color:var(--blue);background:rgba(88,166,255,.08)}
+  .inputbar{display:flex;gap:10px;padding:14px 18px;border-top:1px solid var(--border)}
+  .inputbar input{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--tx);padding:12px 14px;font-size:.95rem;font-family:var(--font)}
+  .inputbar input:focus{outline:none;border-color:var(--blue)}
+  .inputbar button{background:var(--blue);color:#06121f;border:none;border-radius:10px;padding:0 18px;font-weight:700;cursor:pointer;font-size:.95rem}
+  .disclaimer{max-width:920px;margin:14px auto 0;font-size:.76rem;color:var(--dim);text-align:center}
+
+  /* vision */
+  section.vision{padding:46px 0 30px;border-top:1px solid var(--border);margin-top:30px}
+  .vision .lead{text-align:center;max-width:780px;margin:0 auto 38px}
+  .vision .lead h2{font-size:clamp(1.7rem,3.4vw,2.5rem);margin:.2em 0}
+  .vsec{display:grid;grid-template-columns:64px 1fr;gap:6px 22px;padding:26px 0;border-top:1px solid var(--border)}
+  .vsec .num{font-size:1.4rem;font-weight:800;color:var(--dim);font-variant-numeric:tabular-nums}
+  .vsec h3{margin:.1em 0 .35em;font-size:1.25rem}
+  .vsec p{margin:.4em 0;color:var(--mut)}
+  .vsec .full{grid-column:1/-1}
+  .layers{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0}
+  .layer{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+  .layer .t{font-weight:700;font-size:.9rem;margin-bottom:4px}
+  .layer .d{font-size:.78rem;color:var(--dim)}
+  .pillrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
+  .pill{font-size:.76rem;color:var(--mut);border:1px solid var(--border);border-radius:999px;padding:4px 11px}
+
+  footer{padding:44px 0 70px;text-align:center;color:var(--dim);font-size:.84rem;border-top:1px solid var(--border);margin-top:24px}
+  .quiet{color:var(--dim)}
+  ::-webkit-scrollbar{width:10px} ::-webkit-scrollbar-thumb{background:#222b36;border-radius:8px}
+  .thesis{font-size:clamp(1.18rem,2.5vw,1.55rem);font-weight:700;margin:.35em auto .5em;max-width:780px;line-height:1.3}
+  @media(max-width:640px){ .vsec{grid-template-columns:1fr} .vsec .num{font-size:1.1rem} header.hero{padding:54px 0 26px} }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Conversational Genomics</span>
+    <h1>Your genome is not a PDF.<br>It is a <span class="green">conversation</span>.</h1>
+    <p class="sub">Conversational Genome is the operating system for personal genomics: upload your genome once, then ask it questions for the rest of your life. Every answer is grounded in evidence, executed by a versioned skill, and fully auditable.</p>
+    <div class="hero-meta">A live demo on a <b class="mut">real, openly published genome</b>. Manuel Corpas, King's College London hackathon, June 2026.</div>
+    <div class="scroll-cue">Ask the genome below &#8595;</div>
+  </div>
+</header>
+
+<section class="demo">
+  <div class="wrap">
+    <div class="demo-head">
+      <h2>Talk to a real genome</h2>
+      <p class="thesis"><span class="blue">Natural language asks the question.</span> <span class="green">ClawBio executes the answer.</span></p>
+      <p class="mut">No language model writes these answers. Each one is computed from real genotypes by a versioned skill, with its provenance attached.</p>
+    </div>
+
+    <div class="genome-bar">
+      <span><span class="dot"></span> <b>Genome loaded</b></span>
+      <span class="k">subject</span> <b>Manuel Corpas</b>
+      <span class="k">source</span> <b>23andMe Corpasome</b>
+      <span class="k">build</span> <b>GRCh37</b>
+      <span class="k">variants</span> <b>576,517</b>
+      <span class="k">licence</span> <b>CC0</b>
+      <span class="k">doi</span> <a href="https://doi.org/10.6084/m9.figshare.693052" target="_blank" rel="noopener">10.6084/m9.figshare.693052</a>
+    </div>
+
+    <div class="shell">
+      <div class="transcript" id="transcript" aria-live="polite"></div>
+      <div class="chips" id="chips"></div>
+      <div class="inputbar">
+        <input id="q" type="text" placeholder="Ask about a drug, a gene, your ancestry, or what is most actionable..." autocomplete="off">
+        <button id="send">Ask</button>
+      </div>
+    </div>
+    <p class="disclaimer">Research and educational demonstration only. Not a medical device and not clinical advice. Interpretations follow CPIC guidelines via the ClawBio pharmgx-reporter skill on a public-domain genome.</p>
+  </div>
+</section>
+
+<section class="vision">
+  <div class="wrap">
+    <div class="lead">
+      <span class="eyebrow">The founding idea</span>
+      <h2>An operating system for personal genomics</h2>
+      <p class="mut">By 2030 sequencing is commoditised. The bottleneck is no longer data generation; it is continuous understanding, trust, and interaction. Ten principles for the category we are building.</p>
+    </div>
+
+    <div class="vsec"><div class="num">01</div><div>
+      <h3>The category: a conversational genome</h3>
+      <p>A conversational genome is a persistent, agentic interface to a person's genome that turns a static file into a lifelong, evidence-grounded dialogue. It is not a report you read once, not a chatbot bolted onto a PDF, and not a one-time clinical interpretation. 23andMe, Nebula, Sequencing.com, SOPHiA and Fabric all deliver an artefact: a result at a point in time. A conversational genome delivers a relationship over time, where every answer is executed by a versioned skill and re-derivable from first principles.</p>
+    </div></div>
+
+    <div class="vsec"><div class="num">02</div><div>
+      <h3>First principles: why reports are the wrong abstraction</h3>
+      <p>A report freezes interpretation at the moment of sequencing, yet the genome is fixed for life while the science over it changes weekly. The static artefact cannot answer a question it did not anticipate, cannot update when ClinVar moves, and cannot express its own uncertainty. Conversation changes the abstraction from "deliver a document" to "answer any question, forever, with provenance," which is the only abstraction that survives decades of evolving evidence.</p>
+    </div></div>
+
+    <div class="vsec"><div class="num">03</div><div>
+      <h3>Architecture: agents over a trust layer</h3>
+      <p>Natural language is mediated by specialised agents sitting on a non-negotiable trust layer.</p>
+      <div class="layers full">
+        <div class="layer"><div class="t">Agent layer</div><div class="d">Genome, Pharmacogenomics, Rare Disease, Ancestry, Family, Research, Clinical</div></div>
+        <div class="layer"><div class="t">Trust layer</div><div class="d">Provenance, reproducibility, skill execution, confidence and abstention</div></div>
+        <div class="layer"><div class="t">Knowledge layer</div><div class="d">ClinVar, PharmGKB, CPIC, OMIM, gnomAD, Ensembl, literature</div></div>
+        <div class="layer"><div class="t">Data layer</div><div class="d">VCF, BAM/CRAM, polygenic scores, family pedigrees, EHR</div></div>
+      </div>
+      <p>Answers never originate in a model's free text. A question routes to a skill, the skill executes deterministically over the data and knowledge layers, and the result returns with its evidence and confidence. The demo above is this architecture, running.</p>
+    </div></div>
+
+    <div class="vsec"><div class="num">04</div><div>
+      <h3>ClawBio: the execution layer for conversational biology</h3>
+      <p>ClawBio is the open-source framework that executes the skills. Conversational Genome is its flagship application, and the relationship is symbiotic: the application proves the framework at the bar clinical genomics demands, and the framework gives the application reproducibility for free. ClawBio stays open infrastructure so that skills become a shared standard, while the conversational layer is where the network effects compound, every new skill makes every genome more answerable.</p>
+    </div></div>
+
+    <div class="vsec"><div class="num">05</div><div>
+      <h3>Research agenda: where correctness must live</h3>
+      <p>The first large-scale evidence is already in hand. Across 44,550 scored evaluations over nine frontier models and 110 CPIC cases, accuracy climbed as correctness was constrained, but only executing a versioned skill delivered the clinical-grade guarantees, and retrieval-augmenting a model with the correct guideline actually raised the lethal-class error rate. The five-year programme extends this into longitudinal reinterpretation, human-AI genomic interaction, multi-agent biomedical systems, and population-aware interpretation.</p>
+      <div class="pillrow"><span class="pill">Cell Genomics</span><span class="pill">Nature Genetics</span><span class="pill">Nature Biotechnology</span><span class="pill">Cell</span><span class="pill">Science</span></div>
+    </div></div>
+
+    <div class="vsec"><div class="num">06</div><div>
+      <h3>Equity as architecture, not compliance</h3>
+      <p>The same unguarded pipeline that reaches high accuracy on European genomes degrades sharply on others. On real diplotypes it transferred to 72% in European, 51% in Latin American and 40% in East African individuals. Conversational Genome makes this a first-class output: every answer carries an ancestry-validity flag and exposes the evidence gap instead of hiding it. Quantified uncertainty across ancestries, built into the interface, is how equity becomes a differentiator and a global standard rather than a disclaimer.</p>
+      <div class="equity-grid full">
+        <div class="e"><div class="n green">72%</div><div class="l">European</div></div>
+        <div class="e"><div class="n orange">51%</div><div class="l">Latin American</div></div>
+        <div class="e"><div class="n red">40%</div><div class="l">East African</div></div>
+      </div>
+    </div></div>
+
+    <div class="vsec"><div class="num">07</div><div>
+      <h3>Business model: one engine, many surfaces</h3>
+      <p>The same execution engine serves consumers (a lifelong subscription to your own genome), researchers and biobanks (conversational cohorts at population scale), hospitals (point-of-care pharmacogenomics inside the EHR), pharma (trial enrichment and reinterpretation), and public health (equity-aware national programmes). Defensibility is not the model, which commoditises; it is the skill library, the provenance graph, and the trust that compounds as both grow.</p>
+    </div></div>
+
+    <div class="vsec"><div class="num">08</div><div>
+      <h3>Competitive analysis: the conversational wedge</h3>
+      <p>Incumbent clinical platforms are strong at accredited single interpretations and weak at continuity and interaction. Consumer platforms are strong at scale and weak at rigour and trust. General AI assistants are fluent and dangerous, they are precisely the free-prompt condition our benchmark shows fails. The wedge is the combination no incumbent holds: conversational interaction with executed, auditable, ancestry-aware correctness.</p>
+    </div></div>
+
+    <div class="vsec"><div class="num">09</div><div>
+      <h3>Path to category leadership</h3>
+      <p>Lead with the science, set the standard in the open, and let the community build the skills. Publish the benchmark and the architecture, keep ClawBio open so skills converge on a shared contract, define the provenance and reproducibility standard others adopt, and engage regulators early with auditability as the argument. The sequence that wins is evidence first, standard second, ecosystem third.</p>
+    </div></div>
+
+    <div class="vsec"><div class="num">10</div><div>
+      <h3>The 2035 vision</h3>
+      <p>A patient asks their genome whether a new prescription is safe and gets a grounded answer before leaving the pharmacy. A clinician opens the conversational genome inside the EHR and sees the one pharmacogenomic flag that matters, with its evidence. A researcher interrogates a biobank by conversation instead of by query language. A regulator audits not a black box but a reproducible trace. The genome has stopped being a file you store and become a companion you consult, for life.</p>
+    </div></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Conversational Genome &#183; the operating system for personal genomics.</p>
+    <p class="quiet">Demo runs on the openly published Corpasome (CC0, figshare doi:10.6084/m9.figshare.693052), interpreted by the ClawBio pharmgx-reporter skill under CPIC guidelines. Benchmark figures from Corpas, Iacoangeli, Bourdenx, Aldraimli, Skene, Fatumo, Guio, bioRxiv 2026, doi:10.64898/2026.06.11.731523. Not for clinical use.</p>
+  </div>
+</footer>
+
+<script>
+/* Conversational Genome — real data model
+ *
+ * Subject : Manuel Corpas (his own, openly published genome)
+ * Source  : 23andMe "Corpasome", CC0 public domain
+ *           figshare doi:10.6084/m9.figshare.693052
+ *           Corpas M (2013) Crowdsourcing the Corpasome. Source Code Biol Med 8:13.
+ * Build   : GRCh37
+ * Cross-checked against the 30x WGS (Zenodo doi:10.5281/zenodo.19297389):
+ *           CYP2C9*2, CYP1A2*1F and CYP2B6*6 calls agree across both datasets.
+ * Engine  : interpretations follow ClawBio pharmgx-reporter rules (CPIC guidelines).
+ *           Answers are computed from genotypes by deterministic rules, never by a
+ *           language model. Every card carries its provenance.
+ *
+ * NOT FOR CLINICAL USE. Research and educational demonstration only.
+ */
+const GENOME = {
+  provenance: {
+    subject: "Manuel Corpas",
+    source: "23andMe Corpasome",
+    license: "CC0 1.0 (public domain)",
+    doi: "10.6084/m9.figshare.693052",
+    build: "GRCh37",
+    variants: 576517,
+    input_sha256: "e6216c8bd572c4d6b7f1d1c200eef25e8f521e465298092bbd31ecc7680b5f72",
+    engine: "ClawBio pharmgx-reporter",
+    guidelines: "CPIC / PharmGKB",
+    cross_check: "30x WGS, Zenodo doi:10.5281/zenodo.19297389"
+  },
+
+  // Each finding is computed from real genotypes. level: standard | caution | avoid | trait | unresolved
+  findings: [
+    {
+      id: "warfarin",
+      title: "Warfarin (the most-prescribed anticoagulant)",
+      topic: "Anticoagulation",
+      level: "avoid",
+      headline: "Two of your variants stack against warfarin. Standard dosing would likely over-anticoagulate you.",
+      genes: [
+        { gene: "VKORC1", genotype: "A/A", rsid: "rs9923231", call: "-1639 A/A", effect: "high warfarin sensitivity (low VKORC1 expression)" },
+        { gene: "CYP2C9", genotype: "*1/*2", rsid: "rs1799853 (C/T)", call: "intermediate metabolizer", effect: "slower clearance of S-warfarin" }
+      ],
+      interpretation: "VKORC1 -1639 A/A means your clotting target is unusually sensitive to warfarin, and CYP2C9 *1/*2 means you clear it more slowly. The combination places you in CPIC's most dose-reduced, highest-bleeding-risk category. A clinician would either start a markedly lower dose with close INR monitoring, or prefer a direct oral anticoagulant.",
+      confidence: "high",
+      confidence_note: "Both variants are single-SNP, well-imputed on chip, and concordant with your 30x WGS.",
+      ancestry: "CPIC's dosing algorithm is validated across ancestries, but pharmacogenetic warfarin algorithms are known to fit European-ancestry individuals best and to underperform in African-ancestry patients. Your call is European-ancestry and robust.",
+      evidence: [
+        "CPIC Guideline for warfarin and CYP2C9, VKORC1 (2017 update)",
+        "PharmGKB clinical annotation, level 1A"
+      ]
+    },
+    {
+      id: "clopidogrel",
+      title: "Clopidogrel (Plavix)",
+      topic: "Antiplatelet",
+      level: "standard",
+      headline: "Reassuring: you activate clopidogrel normally.",
+      genes: [
+        { gene: "CYP2C19", genotype: "*1/*1", rsid: "rs4244285 G/G, rs12248560 C/C, rs4986893 G/G, rs28399504 A/A", call: "normal metabolizer", effect: "normal conversion to the active drug" }
+      ],
+      interpretation: "You carry none of the CYP2C19 loss-of-function alleles (*2, *3, *4) and not the gain-of-function *17. You are a normal metabolizer, so clopidogrel is expected to work as intended. No genotype-driven change is indicated.",
+      confidence: "high",
+      confidence_note: "Four tag SNPs all reference; the no-variant result here is a positive finding, not missing data.",
+      ancestry: "CYP2C19 loss-of-function alleles are more common in East Asian populations, where this test changes management more often. Your European-ancestry result is well characterised.",
+      evidence: [
+        "CPIC Guideline for clopidogrel and CYP2C19 (2013, 2022 update)",
+        "PharmGKB clinical annotation, level 1A"
+      ]
+    },
+    {
+      id: "statins",
+      title: "Statins (simvastatin and related)",
+      topic: "Cholesterol",
+      level: "standard",
+      headline: "No SLCO1B1 myopathy-risk allele. Standard statin risk for you.",
+      genes: [
+        { gene: "SLCO1B1", genotype: "*1/*1", rsid: "rs4149056 T/T", call: "normal transporter function", effect: "normal hepatic statin uptake" }
+      ],
+      interpretation: "SLCO1B1 controls how statins are cleared into the liver. You carry the normal-function allele, so you do not have the inherited predisposition to statin-associated muscle symptoms that the c.521C variant confers. Standard dosing considerations apply.",
+      confidence: "high",
+      confidence_note: "Single decisive SNP, reference genotype.",
+      ancestry: "The c.521C risk allele frequency varies by ancestry; the variant tested here is well characterised across populations.",
+      evidence: [
+        "CPIC Guideline for statins and SLCO1B1, ABCG2, CYP2C9 (2022)",
+        "PharmGKB clinical annotation, level 1A"
+      ]
+    },
+    {
+      id: "fluoropyrimidines",
+      title: "5-fluorouracil and capecitabine (chemotherapy)",
+      topic: "Oncology",
+      level: "standard",
+      headline: "No DPYD deficiency allele. Standard fluoropyrimidine toxicity risk.",
+      genes: [
+        { gene: "DPYD", genotype: "normal", rsid: "rs3918290 C/C; *13 and D949V not detected", call: "normal metabolizer", effect: "normal pyrimidine catabolism" }
+      ],
+      interpretation: "DPYD breaks down fluoropyrimidine chemotherapy. The severe deficiency alleles (*2A, *13, D949V) that cause life-threatening toxicity are absent in you, so standard dosing is appropriate. This is one of the highest-stakes pharmacogenes in oncology, which is why clearing it matters.",
+      confidence: "high",
+      confidence_note: "The three actionable severe-deficiency variants were all assayed and are reference.",
+      ancestry: "Some DPYD deficiency variants are population-specific and may be missed by panels designed around European alleles; for non-European patients a wider DPYD assay is advisable.",
+      evidence: [
+        "CPIC Guideline for fluoropyrimidines and DPYD (2017)",
+        "PharmGKB clinical annotation, level 1A"
+      ]
+    },
+    {
+      id: "codeine",
+      title: "Codeine, tramadol and CYP2D6",
+      topic: "Pain / opioids",
+      level: "unresolved",
+      headline: "Honest answer: a SNP chip cannot resolve CYP2D6. The system refuses to guess.",
+      genes: [
+        { gene: "CYP2D6", genotype: "indeterminate", rsid: "rs3892097, rs1065852, rs28371725, rs5030655", call: "not callable from chip", effect: "copy-number and hybrid alleles are invisible to SNP arrays" }
+      ],
+      interpretation: "CYP2D6 activates codeine and clears many antidepressants. It is the hardest pharmacogene: deletions, duplications and hybrid genes determine the phenotype and a SNP chip cannot see them. Rather than emit a confident-but-wrong metabolizer status, the trust layer marks this indeterminate and recommends an orthogonal assay (long-read or CNV-aware genotyping).",
+      confidence: "low",
+      confidence_note: "This is the point: a wrong CYP2D6 call is more dangerous than an abstention. Safe uncertainty beats confident hallucination.",
+      ancestry: "CYP2D6 structural diversity is greatest in African and Middle Eastern populations, where chip-based calling fails most often.",
+      evidence: [
+        "CPIC Guideline for codeine and CYP2D6 (2014, 2021 update)",
+        "CYP2D6 genotyping best-practice (PharmVar structural variation)"
+      ]
+    },
+    {
+      id: "efavirenz",
+      title: "Efavirenz (HIV antiretroviral) and CYP2B6",
+      topic: "Infectious disease",
+      level: "caution",
+      headline: "Intermediate metaboliser: higher efavirenz exposure, more CNS side-effect risk.",
+      genes: [
+        { gene: "CYP2B6", genotype: "*1/*6", rsid: "rs3745274 G/T", call: "intermediate metabolizer", effect: "reduced efavirenz clearance" }
+      ],
+      interpretation: "CYP2B6 *1/*6 slows efavirenz clearance, raising plasma levels and the chance of central-nervous-system side effects. If efavirenz were prescribed, a clinician might monitor more closely or prefer an alternative. Concordant with your 30x WGS.",
+      confidence: "moderate",
+      confidence_note: "Single well-characterised functional SNP; full *6 haplotype assumed from the tag SNP.",
+      ancestry: "The *6 allele is common across populations and is especially frequent in African ancestry, where efavirenz dosing research has concentrated.",
+      evidence: [
+        "CPIC Guideline for efavirenz and CYP2B6 (2019)",
+        "PharmGKB clinical annotation, level 1A"
+      ]
+    },
+    {
+      id: "caffeine",
+      title: "Caffeine metabolism (CYP1A2)",
+      topic: "Trait",
+      level: "trait",
+      headline: "CYP1A2 *1F/*1F: a fast caffeine metaboliser, when the enzyme is induced.",
+      genes: [
+        { gene: "CYP1A2", genotype: "*1F/*1F", rsid: "rs762551 A/A", call: "increased inducibility", effect: "faster caffeine clearance under induction" }
+      ],
+      interpretation: "You are homozygous for the CYP1A2 *1F allele, associated with faster caffeine clearance, particularly in smokers and heavy coffee drinkers where the enzyme is induced. This is a trait association, not a clinical directive; caffeine response is multifactorial.",
+      confidence: "moderate",
+      confidence_note: "Robust genotype; the phenotype is gene-by-environment, so confidence in the trait is inherently moderate.",
+      ancestry: "Allele frequencies vary, and most CYP1A2 caffeine studies are in European cohorts.",
+      evidence: [
+        "PharmGKB CYP1A2 caffeine annotations",
+        "Multiple gene-environment association studies"
+      ]
+    },
+    {
+      id: "alcohol",
+      title: "Alcohol metabolism (ADH1B, ALDH2)",
+      topic: "Trait",
+      level: "trait",
+      headline: "Typical European alcohol metabolism, no flush reaction.",
+      genes: [
+        { gene: "ADH1B", genotype: "rs1229984 C/C", rsid: "rs1229984", call: "common allele", effect: "typical alcohol oxidation rate" },
+        { gene: "ALDH2", genotype: "rs671 G/G", rsid: "rs671", call: "normal ALDH2", effect: "no acetaldehyde flush variant" }
+      ],
+      interpretation: "You do not carry the fast-acting ADH1B His allele or the East-Asian ALDH2 *2 flush variant, so your alcohol metabolism is typical for European ancestry. No protective flush response.",
+      confidence: "moderate",
+      confidence_note: "Two decisive trait SNPs, both reference for the notable variants.",
+      ancestry: "The ALDH2 *2 flush allele is essentially East-Asian-specific; its absence here is expected.",
+      evidence: ["PharmGKB ADH1B / ALDH2 trait annotations"]
+    }
+  ],
+
+  // meta-intents return synthesised, honest answers (still no language model)
+  meta: {
+    actionable_order: ["warfarin", "efavirenz", "codeine", "clopidogrel", "statins", "fluoropyrimidines"],
+    ancestry: {
+      title: "How reliable are these for non-European ancestry?",
+      body: "Your genome is European-ancestry, where the CPIC evidence base is deepest, so most calls above are high-confidence. That is not true for everyone. In our real-genome benchmark, the same unguarded interpretation pipeline transferred to only 72% accuracy in European, 51% in Latin American (Peruvian Genome Project) and 40% in East African (Uganda Genome Resource) diplotypes. Conversational Genome treats this as a first-class output: every answer carries an ancestry-validity flag, and the gaps are shown, not hidden. Equity is a property of the architecture, not a disclaimer.",
+      stat: [["72%", "European"], ["51%", "Latin American"], ["40%", "East African"]]
+    },
+    inheritance: {
+      title: "Which variants came from my mother?",
+      body: "This honestly cannot be answered from a single unphased genome. The Corpasome is one sample, so the two alleles at each site are known but their parental origin is not. Resolving it needs trio or pedigree data and phasing. That is exactly what the Family Agent layer is for, and it is why the system tells you what it cannot know rather than inventing an answer."
+    },
+    changed: {
+      title: "Has anything changed since last year?",
+      body: "This is the longitudinal-reinterpretation capability: your genome is fixed, but the knowledge over it is not. As new ClinVar, PharmGKB and CPIC releases arrive, the system re-runs the skills and diffs the result. When an interpretation flips, you are notified with the evidence that changed. The illustrative example below shows the mechanism; it is labelled illustrative because no real reclassification is being asserted here.",
+      illustrative: true
+    }
+  },
+
+  suggested: [
+    "What does my genome say about warfarin?",
+    "Can I take clopidogrel?",
+    "What about statins?",
+    "Codeine for pain?",
+    "What is most actionable?",
+    "How reliable is this for Peruvian ancestry?",
+    "Which variants came from my mother?",
+    "Show me the audit trail"
+  ]
+};
+</script>
+<script>
+(function(){
+  const T = document.getElementById('transcript');
+  const CH = document.getElementById('chips');
+  const Q = document.getElementById('q');
+  const SEND = document.getElementById('send');
+  const P = GENOME.provenance;
+
+  function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+  function scroll(){T.scrollTop = T.scrollHeight;}
+
+  function userMsg(text){
+    const d=document.createElement('div'); d.className='msg user';
+    d.innerHTML='<div class="bubble">'+esc(text)+'</div>'; T.appendChild(d); scroll();
+  }
+  function botMsg(html){
+    const d=document.createElement('div'); d.className='msg bot';
+    d.innerHTML='<div class="who">Conversational Genome</div>'+html; T.appendChild(d); scroll();
+  }
+
+  function provLine(){
+    return '<div class="prov"><b>skill</b> '+esc(P.engine)+' &#183; <b>guidelines</b> '+esc(P.guidelines)+
+      ' &#183; <b>source</b> Corpasome doi:'+esc(P.doi)+' ('+esc(P.build)+', '+esc(P.license)+
+      ') &#183; <b>input sha256</b> '+P.input_sha256.slice(0,16)+'&#8230; &#183; reproducible';
+  }
+
+  function genesHtml(f){
+    let h='<div class="genes">';
+    f.genes.forEach(g=>{
+      h+='<div class="gene-row"><span class="g">'+esc(g.gene)+'</span><span class="geno">'+esc(g.genotype)+'</span>'+
+         '<span class="rs">'+esc(g.rsid)+'</span>'+
+         (g.effect?'<span class="eff">'+esc(g.effect)+'</span>':'')+'</div>';
+    });
+    return h+'</div>';
+  }
+
+  function findingCard(f){
+    const lvlLabel={standard:'Standard',caution:'Caution',avoid:'Avoid',unresolved:'Unresolved',trait:'Trait'}[f.level];
+    let h='<div class="card '+f.level+'">';
+    h+='<div class="row1"><h3>'+esc(f.title)+'</h3><span class="badge b-'+f.level+'">'+lvlLabel+'</span></div>';
+    h+='<div class="headline">'+esc(f.headline)+'</div>';
+    h+=genesHtml(f);
+    h+='<div class="interp">'+esc(f.interpretation)+'</div>';
+    h+='<div class="meta-line"><span class="lab">Confidence</span><span><span class="conf '+f.confidence+'">'+f.confidence+'</span> '+esc(f.confidence_note)+'</span></div>';
+    h+='<div class="meta-line"><span class="lab">Ancestry</span><span>'+esc(f.ancestry)+'</span></div>';
+    h+='<div class="meta-line"><span class="lab">Evidence</span><ul class="evidence">'+f.evidence.map(e=>'<li>'+esc(e)+'</li>').join('')+'</ul></div>';
+    h+=provLine();
+    h+='</div>';
+    return h;
+  }
+
+  function findById(id){return GENOME.findings.find(f=>f.id===id);}
+
+  // intent routing — deterministic, no model
+  const KW = {
+    warfarin:["warfarin","coumadin","blood thinner","anticoagul","vkorc","clot","inr"],
+    clopidogrel:["clopidogrel","plavix","antiplatelet","stent","cyp2c19","heart attack"],
+    statins:["statin","simvastatin","atorvastatin","rosuvastatin","cholesterol","slco1b1","myopathy","muscle"],
+    fluoropyrimidines:["5-fu","5fu","fluorouracil","capecitabine","chemo","dpyd","cancer","oncolog"],
+    codeine:["codeine","tramadol","opioid","painkiller","cyp2d6","antidepressant","ssri"],
+    efavirenz:["efavirenz","hiv","antiretroviral","cyp2b6","sustiva"],
+    caffeine:["caffeine","coffee","cyp1a2"],
+    alcohol:["alcohol","drink","wine","beer","adh1b","aldh2","flush"]
+  };
+
+  function route(textRaw){
+    const t=textRaw.toLowerCase().trim();
+    const has=(...ks)=>ks.some(k=>t.includes(k));
+
+    // meta intents first
+    if(has("audit","provenance","evidence trail","trace","how do you know","reproduc","source","citation"))
+      return {type:"audit"};
+    if(has("most actionable","what is actionable","what's actionable","priorit","important","what should","matters most","summary","everything","all findings","overview","list"))
+      return {type:"actionable"};
+    if(has("ancestry","peruvian","african","latin","non-european","equity","reliable for","how reliable","other population","diverse"))
+      return {type:"ancestry"};
+    if(has("mother","father","parent","inherit","came from","which side","phas"))
+      return {type:"inheritance"};
+    if(has("changed","change since","last year","new evidence","update","reinterpret","since my genome"))
+      return {type:"changed"};
+
+    // findings
+    for(const id in KW){ if(has(...KW[id])) return {type:"finding",id}; }
+    return {type:"fallback"};
+  }
+
+  function answer(text){
+    const r=route(text);
+    if(r.type==="finding"){ botMsg(findingCard(findById(r.id))); return; }
+    if(r.type==="audit"){
+      botMsg('<div class="card"><div class="row1"><h3>Provenance and reproducibility</h3><span class="badge b-trait">Audit</span></div>'+
+        '<div class="interp">Every answer in this demo is traceable to a public input and a versioned skill. Nothing is generated by a language model.</div>'+
+        '<div class="genes">'+
+        '<div class="gene-row"><span class="g">Genome</span><span class="geno">'+esc(P.subject)+'</span><span class="eff">'+esc(P.source)+', '+esc(P.variants.toLocaleString())+' variants, '+esc(P.build)+', '+esc(P.license)+'</span></div>'+
+        '<div class="gene-row"><span class="g">Source DOI</span><span class="geno">figshare</span><span class="eff">doi:'+esc(P.doi)+'</span></div>'+
+        '<div class="gene-row"><span class="g">Engine</span><span class="geno">'+esc(P.engine)+'</span><span class="eff">CPIC / PharmGKB rule tables, executed deterministically</span></div>'+
+        '<div class="gene-row"><span class="g">Input hash</span><span class="geno">sha256</span><span class="rs">'+esc(P.input_sha256)+'</span></div>'+
+        '<div class="gene-row"><span class="g">Cross-check</span><span class="geno">30x WGS</span><span class="eff">'+esc(P.cross_check)+' (key calls concordant)</span></div>'+
+        '</div>'+
+        '<div class="meta-line"><span class="lab">Note</span><span>On the 30x WGS input the same skill detected a build mismatch and returned <b>Indeterminate</b> rather than risk a wrong call. Safe abstention is a feature, not a bug.</span></div>'+
+        '</div>'); return;
+    }
+    if(r.type==="actionable"){
+      const order=GENOME.meta.actionable_order;
+      let h='<div class="card"><div class="row1"><h3>What is most actionable in your genome</h3><span class="badge b-avoid">Ranked</span></div>'+
+        '<div class="interp">Ranked by clinical consequence. The system leads with what could hurt you, not with the longest list.</div><div class="genes">';
+      order.forEach(id=>{const f=findById(id);const lab={standard:'Standard',caution:'Caution',avoid:'Avoid',unresolved:'Unresolved',trait:'Trait'}[f.level];
+        h+='<div class="gene-row"><span class="g">'+esc(f.title.split(' (')[0])+'</span><span class="geno"><span class="badge b-'+f.level+'">'+lab+'</span></span><span class="eff">'+esc(f.headline)+'</span></div>';});
+      h+='</div><div class="meta-line"><span class="lab">Tip</span><span>Ask about any one by name to see its variants, evidence and confidence.</span></div>'+provLine()+'</div>';
+      botMsg(h); return;
+    }
+    if(r.type==="ancestry"){
+      const a=GENOME.meta.ancestry;
+      let h='<div class="card trait"><div class="row1"><h3>'+esc(a.title)+'</h3><span class="badge b-trait">Equity</span></div>'+
+        '<div class="interp">'+esc(a.body)+'</div><div class="equity-grid">';
+      a.stat.forEach(s=>{h+='<div class="e"><div class="n">'+esc(s[0])+'</div><div class="l">'+esc(s[1])+'</div></div>';});
+      h+='</div><div class="prov"><b>benchmark</b> real-genome transfer, bioRxiv 2026 doi:10.64898/2026.06.11.731523</div></div>';
+      botMsg(h); return;
+    }
+    if(r.type==="inheritance"){
+      const m=GENOME.meta.inheritance;
+      botMsg('<div class="card unresolved"><div class="row1"><h3>'+esc(m.title)+'</h3><span class="badge b-unresolved">Cannot answer yet</span></div>'+
+        '<div class="interp">'+esc(m.body)+'</div>'+
+        '<div class="meta-line"><span class="lab">Why</span><span>The honest non-answer is the point. The system tells you the boundary of what one genome can know.</span></div></div>'); return;
+    }
+    if(r.type==="changed"){
+      const c=GENOME.meta.changed;
+      botMsg('<div class="card caution"><div class="row1"><h3>'+esc(c.title)+'</h3><span class="badge b-caution">Illustrative</span></div>'+
+        '<div class="interp">'+esc(c.body)+'</div>'+
+        '<div class="genes"><div class="gene-row"><span class="g">Mechanism</span><span class="geno">ClinVar diff</span><span class="eff">new release ingested, skills re-run, results compared, flips surfaced with the evidence that moved</span></div></div>'+
+        '<div class="meta-line"><span class="lab">Marked</span><span>Illustrative: no real reclassification is asserted here. This demonstrates the longitudinal capability.</span></div></div>'); return;
+    }
+    // fallback
+    botMsg('<div class="card"><div class="interp">Answers come from real genotypes, executed by a versioned skill, so the system is precise about what it can and cannot say. Try a drug name (warfarin, clopidogrel, statins, codeine), a topic (caffeine, alcohol, ancestry), or ask <b>what is most actionable</b> or <b>show me the audit trail</b>.</div></div>');
+  }
+
+  function ask(text){ if(!text.trim())return; userMsg(text); setTimeout(()=>answer(text),260); }
+
+  // suggested chips
+  GENOME.suggested.forEach(s=>{
+    const c=document.createElement('button'); c.className='chip'; c.textContent=s;
+    c.onclick=()=>{ask(s); Q.value='';}; CH.appendChild(c);
+  });
+
+  SEND.onclick=()=>{ask(Q.value); Q.value='';};
+  Q.addEventListener('keydown',e=>{if(e.key==='Enter'){ask(Q.value);Q.value='';}});
+
+  // opening message
+  botMsg('<div class="card"><div class="interp">This is an openly published genome, loaded and ready: '+esc(P.subject)+"'s own ("+esc(P.variants.toLocaleString())+' variants, '+esc(P.build)+', public domain). Ask how this genome meets medicine. Every answer shows its evidence, its confidence, and where it is valid by ancestry.</div>'+
+    '<div class="meta-line"><span class="lab">Try</span><span>Tap a question below, or type your own.</span></div></div>');
+
+  // deep-linkable questions: open with #ask=<question> to jump straight to an answer
+  function handleHash(){
+    const m = location.hash.match(/^#ask=(.+)/);
+    if(m){ const qd = decodeURIComponent(m[1].replace(/\+/g,' ')); ask(qd); }
+  }
+  window.addEventListener('hashchange', handleHash);
+  handleHash();
+})();
+</script>
+</body>
+</html>
