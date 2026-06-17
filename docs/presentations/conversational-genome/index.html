@@ -139,23 +139,60 @@
   .relation .rbox .t{font-weight:700;font-size:.94rem} .relation .rbox .d{font-size:.79rem;color:var(--dim);margin-top:3px}
   .relation .ar{color:var(--dim);font-size:1.3rem;font-weight:700}
   .flow{font-size:.82rem;color:var(--dim);margin-top:8px;font-family:ui-monospace,Menlo,monospace}
+
+  .cta-row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:22px 0 12px}
+  .cta{display:inline-block;font-size:.92rem;font-weight:700;padding:11px 18px;border-radius:10px;border:1px solid var(--border);color:var(--tx);background:var(--panel);transition:.15s}
+  .cta:hover{border-color:var(--blue)}
+  .cta.primary{background:var(--blue);color:#06121f;border-color:var(--blue)}
+  .cta.ghost{background:transparent;color:var(--mut)}
+  .nowvision{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:14px;font-size:.83rem}
+  .nv{border:1px solid var(--border);border-radius:999px;padding:6px 14px;color:var(--mut)}
+  .nv.now{border-color:rgba(86,211,100,.4)} .nv.now b{color:var(--green)} .nv.soon b{color:var(--blue)}
+  section.actions{padding:38px 0 6px} section.paths{padding:18px 0 36px}
+  .action-grid,.path-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(272px,1fr));gap:14px;margin-top:12px}
+  .acard,.pcard{background:var(--panel);border:1px solid var(--border);border-radius:13px;padding:18px 20px;display:flex;flex-direction:column}
+  .acard .at{font-weight:700;font-size:1.05rem;margin-bottom:5px} .acard .ad{color:var(--mut);font-size:.87rem;margin-bottom:11px}
+  .code{background:#0b0f15;border:1px solid var(--border);border-radius:9px;padding:11px 13px;font-family:ui-monospace,Menlo,monospace;font-size:.78rem;color:var(--green);overflow-x:auto;margin:0 0 12px;white-space:pre;line-height:1.55}
+  .acard .cta{font-size:.84rem;padding:8px 14px;align-self:flex-start;margin-top:auto}
+  .pcard .pwho{font-size:.71rem;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:9px}
+  .pcard ol{margin:0;padding-left:1.2em} .pcard li{color:var(--mut);font-size:.85rem;margin:6px 0}
+  .pcard code{background:rgba(255,255,255,.05);padding:1px 6px;border-radius:5px;font-size:.82em;color:var(--tx);font-family:ui-monospace,Menlo,monospace}
+  .pwin{margin-top:12px;padding-top:10px;border-top:1px solid var(--border);font-size:.83rem;color:var(--green);font-weight:600}
+  .trust-strip{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 2px}
+  .tchip{font-size:.7rem;font-weight:600;padding:4px 9px;border-radius:7px;border:1px solid var(--border);background:rgba(255,255,255,.02);color:var(--mut);font-family:ui-monospace,Menlo,monospace}
+  .tchip.skill{color:var(--blue);border-color:rgba(88,166,255,.35)}
+  .tchip.src{color:var(--orange);border-color:rgba(227,179,65,.35)}
+  .tchip.anc .adot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:5px;vertical-align:middle}
+  .tchip.audit{cursor:pointer;color:var(--purple);border-color:rgba(210,168,255,.35);font-family:var(--font);font-weight:700}
+  .tchip.audit:hover{background:rgba(210,168,255,.08)}
+  .audit-panel{margin:7px 0 2px;padding:10px 12px;border:1px dashed var(--border);border-radius:9px;background:rgba(0,0,0,.22);font-size:.73rem;font-family:ui-monospace,Menlo,monospace;color:var(--dim);line-height:1.75}
+  .audit-panel b{color:var(--mut)} .audit-panel code{color:var(--green);background:rgba(86,211,100,.08);padding:1px 6px;border-radius:5px}
+  .audit-panel .ax-note{color:var(--green);margin-top:4px;font-family:var(--font)}
 </style>
 </head>
 <body>
 
 <header class="hero">
   <div class="wrap">
-    <span class="eyebrow">Conversational Genomics</span>
-    <h1>Your genome is not a PDF.<br>It is a <span class="green">conversation</span>.</h1>
-    <p class="sub">Upload your genome once. Ask it questions for the rest of your life. Every answer is grounded in evidence, executed by a versioned skill, and auditable.</p>
-    <div class="hero-meta">A live demo on a <b class="mut">real, openly published genome</b>. Manuel Corpas, King's College London hackathon, June 2026.</div>
-    <div class="scroll-cue">Ask the genome below &#8595;</div>
+    <span class="eyebrow">Conversational Genomics &#183; built on ClawBio</span>
+    <h1>Ask your genome.<br>Get an answer you can <span class="green">audit</span>.</h1>
+    <p class="sub">A question-answering interface to a genome for clinicians, researchers, and developers. Today it turns a genotype file into CPIC-grounded pharmacogenomic answers, each executed by a named, versioned skill with its evidence and an ancestry-validity flag. Not a chatbot's guess.</p>
+    <div class="cta-row">
+      <a class="cta primary" href="#demo">Try the live demo</a>
+      <a class="cta" href="#run">Run skills on your data</a>
+      <a class="cta ghost" href="#build">Integrate into your agent</a>
+    </div>
+    <div class="nowvision">
+      <span class="nv now"><b>Available now</b> &#160; ask PGx questions, run skills locally, call the API</span>
+      <span class="nv soon"><b>Where this goes</b> &#160; a lifelong, self-updating companion across your whole genome (2030-2035)</span>
+    </div>
   </div>
 </header>
 
-<section class="demo">
+<section class="demo" id="demo">
   <div class="wrap">
     <div class="demo-head">
+      <span class="eyebrow">Available now</span>
       <h2>Talk to a real genome</h2>
       <p class="thesis"><span class="blue">Natural language asks the question.</span> <span class="green">ClawBio executes the answer.</span></p>
       <p class="mut">No language model writes these answers. Each one is computed from real genotypes by a versioned skill, with its provenance attached.</p>
@@ -183,12 +220,83 @@
   </div>
 </section>
 
+<section class="actions" id="run">
+  <div class="wrap">
+    <div class="demo-head"><span class="eyebrow">Available now</span><h2>What you can do today</h2></div>
+    <div class="action-grid">
+      <div class="acard">
+        <div class="at">Try the demo</div>
+        <div class="ad">Ask the genome above. Every answer is an executed skill with provenance, confidence, and an ancestry-validity flag.</div>
+        <a class="cta" href="#demo">Open the demo</a>
+      </div>
+      <div class="acard">
+        <div class="at">Run skills on your own data</div>
+        <div class="ad">Install ClawBio and run the same PGx skill on your genotypes, locally and reproducibly.</div>
+        <pre class="code">pip install clawbio
+clawbio run pharmgx --demo
+clawbio run pharmgx --input your_genotypes.txt</pre>
+        <a class="cta ghost" href="https://docs.clawbio.ai/tutorials/run-your-first-skill/" target="_blank" rel="noopener">Run your first skill &#8594;</a>
+      </div>
+      <div class="acard" id="build">
+        <div class="at">Integrate into your agent</div>
+        <div class="ad">Call versioned skills from your own agent and get structured, auditable output.</div>
+        <pre class="code">from clawbio import run_skill
+result = run_skill("pharmgx",
+    input="your_genotypes.txt")
+# skill@version, CPIC guideline, checksum</pre>
+        <a class="cta ghost" href="https://docs.clawbio.ai/tutorials/making-agents/" target="_blank" rel="noopener">Build a ClawBio agent &#8594;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="paths" id="paths">
+  <div class="wrap">
+    <div class="demo-head"><span class="eyebrow">First-run paths</span><h2>Find your fastest first success</h2></div>
+    <div class="path-grid">
+      <div class="pcard">
+        <div class="pwho">Clinical PGx implementer</div>
+        <ol>
+          <li>Ask the demo about <b>warfarin</b>, then open <b>Audit</b> on the card.</li>
+          <li>Read the skill version, the CPIC guideline, and the reproduce command.</li>
+          <li><code>pip install clawbio</code>, then run it on a test genotype file.</li>
+          <li>Open the <a href="https://docs.clawbio.ai/skills/pharmgx-reporter/" target="_blank" rel="noopener">PharmGx skill doc</a> (13 genes, 59 drugs, CPIC mapping).</li>
+          <li>Pin the skill version in your pipeline for reproducibility.</li>
+        </ol>
+        <div class="pwin">First success: a reproducible PGx report on your own data.</div>
+      </div>
+      <div class="pcard">
+        <div class="pwho">Researcher / biobank PI</div>
+        <ol>
+          <li>Ask the demo <b>how reliable this is for Peruvian ancestry</b>.</li>
+          <li>See the 72 / 51 / 40 ancestry transfer and the evidence behind it.</li>
+          <li>Run PharmGx across a cohort export; read the per-call ancestry flags.</li>
+          <li>Quantify the gap with the <a href="https://docs.clawbio.ai/skills/equity-scorer/" target="_blank" rel="noopener">Equity Scorer (HEIM)</a> skill.</li>
+          <li>Cite the versioned-skill benchmark and pin versions in your methods.</li>
+        </ol>
+        <div class="pwin">First success: an ancestry-stratified, reproducible cohort read.</div>
+      </div>
+      <div class="pcard">
+        <div class="pwho">Developer</div>
+        <ol>
+          <li>Try the demo; note that answers are executed skills, not free text.</li>
+          <li><code>pip install clawbio</code>, then <code>clawbio list</code>.</li>
+          <li><code>from clawbio import run_skill</code> inside your own agent.</li>
+          <li>Read <a href="https://docs.clawbio.ai/tutorials/making-agents/" target="_blank" rel="noopener">Building custom agents</a>.</li>
+          <li><a href="https://docs.clawbio.ai/tutorials/build-a-skill/" target="_blank" rel="noopener">Build a skill</a> and add it to the library.</li>
+        </ol>
+        <div class="pwin">First success: your agent answers by executing a versioned skill.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="vision">
   <div class="wrap">
     <div class="lead">
-      <span class="eyebrow">The founding idea</span>
+      <span class="eyebrow">How it works, and where it goes</span>
       <h2>An operating system for personal genomics</h2>
-      <p class="mut">By 2030, sequencing is commoditised. The bottleneck becomes understanding, trust, and interaction.</p>
+      <p class="mut">Skills are the apps, the trust layer is the kernel, the genome is the user. Below: why you can trust an answer today, the evidence behind that claim, and the 2030-2035 vision.</p>
     </div>
 
     <div class="vsec"><div class="num">01</div><div>
@@ -235,8 +343,8 @@
     </div></div>
 
     <div class="vsec"><div class="num">05</div><div>
-      <h3>Research agenda</h3>
-      <div class="vlead">We measured where correctness must live.</div>
+      <h3>The evidence behind the trust</h3>
+      <div class="vlead">Why "executed, not generated" is a measured claim, not a slogan.</div>
       <div class="tiles full">
         <div class="tile"><div class="n">44,550</div><div class="l">scored evaluations</div></div>
         <div class="tile"><div class="n">9</div><div class="l">frontier models</div></div>
@@ -551,20 +659,38 @@ const GENOME = {
     return h+'</div>';
   }
 
+  function srcOf(f){const e=(f.evidence&&f.evidence[0])||'';return /CPIC/.test(e)?'CPIC':(/PharmG/i.test(e)?'PharmGKB':'evidence');}
+  function trustStrip(f){
+    const src=srcOf(f);
+    return '<div class="trust-strip">'+
+      '<span class="tchip skill" title="The exact skill and version that produced this answer">pharmgx-reporter v0.2.0</span>'+
+      '<span class="tchip src" title="The published guideline this recommendation follows">'+src+'</span>'+
+      '<span class="tchip anc" title="Where this interpretation is best supported. Subject ancestry: European"><span class="adot"></span>European-ancestry: strong</span>'+
+      '<button class="tchip audit" onclick="__cgAudit(this)">Audit &#9656;</button>'+
+      '</div>'+
+      '<div class="audit-panel" hidden>'+
+        '<div><b>input</b> 23andMe Corpasome &#183; 576,517 variants &#183; GRCh37 &#183; CC0</div>'+
+        '<div><b>sha256</b> '+P.input_sha256.slice(0,24)+'&#8230;</div>'+
+        '<div><b>skill</b> pharmgx-reporter v0.2.0 &#183; <b>guideline</b> '+src+' &#183; <b>source</b> doi:'+esc(P.doi)+'</div>'+
+        '<div><b>reproduce</b> <code>clawbio run pharmgx --input corpasome.txt</code></div>'+
+        '<div class="ax-note">This answer was executed by the skill, not generated by a model.</div>'+
+      '</div>';
+  }
   function findingCard(f){
     const lvlLabel={standard:'Standard',caution:'Caution',avoid:'Avoid',unresolved:'Unresolved',trait:'Trait'}[f.level];
     let h='<div class="card '+f.level+'">';
     h+='<div class="row1"><h3>'+esc(f.title)+'</h3><span class="badge b-'+f.level+'">'+lvlLabel+'</span></div>';
+    h+=trustStrip(f);
     h+='<div class="headline">'+esc(f.headline)+'</div>';
     h+=genesHtml(f);
     h+='<div class="interp">'+esc(f.interpretation)+'</div>';
     h+='<div class="meta-line"><span class="lab">Confidence</span><span><span class="conf '+f.confidence+'">'+f.confidence+'</span> '+esc(f.confidence_note)+'</span></div>';
     h+='<div class="meta-line"><span class="lab">Ancestry</span><span>'+esc(f.ancestry)+'</span></div>';
     h+='<div class="meta-line"><span class="lab">Evidence</span><ul class="evidence">'+f.evidence.map(e=>'<li>'+esc(e)+'</li>').join('')+'</ul></div>';
-    h+=provLine();
     h+='</div>';
     return h;
   }
+  window.__cgAudit=function(btn){var c=btn.closest('.card');if(!c)return;var pn=c.querySelector('.audit-panel');if(!pn)return;pn.hidden=!pn.hidden;btn.innerHTML=pn.hidden?'Audit &#9656;':'Audit &#9662;';};
 
   function findById(id){return GENOME.findings.find(f=>f.id===id);}
 
