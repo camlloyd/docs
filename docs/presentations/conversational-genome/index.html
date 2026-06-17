@@ -109,6 +109,36 @@
   ::-webkit-scrollbar{width:10px} ::-webkit-scrollbar-thumb{background:#222b36;border-radius:8px}
   .thesis{font-size:clamp(1.18rem,2.5vw,1.55rem);font-weight:700;margin:.35em auto .5em;max-width:780px;line-height:1.3}
   @media(max-width:640px){ .vsec{grid-template-columns:1fr} .vsec .num{font-size:1.1rem} header.hero{padding:54px 0 26px} }
+
+  .vlead{font-size:1.02rem;color:var(--tx);font-weight:600;margin:.1em 0 .55em}
+  .contrast{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:6px 0}
+  .contrast .col{border:1px solid var(--border);border-radius:11px;padding:13px 16px;background:var(--panel)}
+  .contrast .not{border-left:3px solid var(--dim)} .contrast .is{border-left:3px solid var(--green)}
+  .contrast .hh{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:7px}
+  .contrast .is .hh{color:var(--green)}
+  .contrast ul{margin:0;padding-left:1.05em} .contrast li{margin:4px 0;color:var(--mut);font-size:.88rem}
+  .cmp{width:100%;border-collapse:collapse;margin:6px 0;font-size:.85rem}
+  .cmp th,.cmp td{border:1px solid var(--border);padding:8px 11px;text-align:left}
+  .cmp th{color:var(--dim);font-weight:600;font-size:.7rem;text-transform:uppercase;letter-spacing:.04em;background:rgba(255,255,255,.02)}
+  .cmp td.lo{color:var(--mut)} .cmp td.ok{color:var(--green);font-weight:700} .cmp td.no{color:var(--dim);text-align:center} .cmp td.c{text-align:center}
+  .tiles{display:flex;flex-wrap:wrap;gap:10px;margin:6px 0}
+  .tile{flex:1;min-width:108px;text-align:center;background:var(--panel);border:1px solid var(--border);border-radius:11px;padding:12px}
+  .tile .n{font-size:1.5rem;font-weight:800;color:var(--blue)} .tile .l{font-size:.73rem;color:var(--mut);margin-top:2px}
+  .surface-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:9px;margin:6px 0}
+  .surface{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:11px 13px}
+  .surface .t{font-weight:700;font-size:.87rem} .surface .d{font-size:.76rem;color:var(--dim);margin-top:2px}
+  .stepper{display:flex;gap:10px;margin:6px 0;flex-wrap:wrap}
+  .step{flex:1;min-width:150px;background:var(--panel);border:1px solid var(--border);border-radius:11px;padding:12px 15px}
+  .step .n{font-size:.7rem;color:var(--blue);font-weight:800;letter-spacing:.08em} .step .t{font-weight:700;margin:3px 0;font-size:.94rem} .step .d{font-size:.79rem;color:var(--mut)}
+  .vignettes{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:10px;margin:6px 0}
+  .vig{background:var(--panel);border:1px solid var(--border);border-radius:11px;padding:12px 15px}
+  .vig .who{font-size:.69rem;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:5px}
+  .vig p{margin:0;color:var(--mut);font-size:.85rem}
+  .relation{display:flex;align-items:center;gap:12px;margin:6px 0;flex-wrap:wrap}
+  .relation .rbox{flex:1;min-width:190px;background:var(--panel);border:1px solid var(--border);border-radius:11px;padding:13px 16px}
+  .relation .rbox .t{font-weight:700;font-size:.94rem} .relation .rbox .d{font-size:.79rem;color:var(--dim);margin-top:3px}
+  .relation .ar{color:var(--dim);font-size:1.3rem;font-weight:700}
+  .flow{font-size:.82rem;color:var(--dim);margin-top:8px;font-family:ui-monospace,Menlo,monospace}
 </style>
 </head>
 <body>
@@ -117,7 +147,7 @@
   <div class="wrap">
     <span class="eyebrow">Conversational Genomics</span>
     <h1>Your genome is not a PDF.<br>It is a <span class="green">conversation</span>.</h1>
-    <p class="sub">Conversational Genome is the operating system for personal genomics: upload your genome once, then ask it questions for the rest of your life. Every answer is grounded in evidence, executed by a versioned skill, and fully auditable.</p>
+    <p class="sub">Upload your genome once. Ask it questions for the rest of your life. Every answer is grounded in evidence, executed by a versioned skill, and auditable.</p>
     <div class="hero-meta">A live demo on a <b class="mut">real, openly published genome</b>. Manuel Corpas, King's College London hackathon, June 2026.</div>
     <div class="scroll-cue">Ask the genome below &#8595;</div>
   </div>
@@ -158,70 +188,114 @@
     <div class="lead">
       <span class="eyebrow">The founding idea</span>
       <h2>An operating system for personal genomics</h2>
-      <p class="mut">By 2030 sequencing is commoditised. The bottleneck is no longer data generation; it is continuous understanding, trust, and interaction. Ten principles for the category we are building.</p>
+      <p class="mut">By 2030, sequencing is commoditised. The bottleneck becomes understanding, trust, and interaction.</p>
     </div>
 
     <div class="vsec"><div class="num">01</div><div>
-      <h3>The category: a conversational genome</h3>
-      <p>A conversational genome is a persistent, agentic interface to a person's genome that turns a static file into a lifelong, evidence-grounded dialogue. It is not a report you read once, not a chatbot bolted onto a PDF, and not a one-time clinical interpretation. 23andMe, Nebula, Sequencing.com, SOPHiA and Fabric all deliver an artefact: a result at a point in time. A conversational genome delivers a relationship over time, where every answer is executed by a versioned skill and re-derivable from first principles.</p>
+      <h3>The category</h3>
+      <div class="vlead">A genome you talk to, for life.</div>
+      <div class="contrast full">
+        <div class="col not"><div class="hh">Not</div><ul><li>A PDF report</li><li>A one-time interpretation</li><li>A chatbot on top of a report</li></ul></div>
+        <div class="col is"><div class="hh">But</div><ul><li>A lifelong digital asset</li><li>An evidence-grounded dialogue</li><li>Every answer executed and re-derivable</li></ul></div>
+      </div>
     </div></div>
 
     <div class="vsec"><div class="num">02</div><div>
-      <h3>First principles: why reports are the wrong abstraction</h3>
-      <p>A report freezes interpretation at the moment of sequencing, yet the genome is fixed for life while the science over it changes weekly. The static artefact cannot answer a question it did not anticipate, cannot update when ClinVar moves, and cannot express its own uncertainty. Conversation changes the abstraction from "deliver a document" to "answer any question, forever, with provenance," which is the only abstraction that survives decades of evolving evidence.</p>
+      <h3>First principles</h3>
+      <div class="vlead">Reports freeze. Conversations do not.</div>
+      <table class="cmp full">
+        <tr><th>Static report</th><th>Conversational genome</th></tr>
+        <tr><td class="lo">Answers only what it anticipated</td><td class="ok">Answers any question</td></tr>
+        <tr><td class="lo">Frozen at sequencing</td><td class="ok">Updates as evidence moves</td></tr>
+        <tr><td class="lo">Hides uncertainty</td><td class="ok">Carries confidence and ancestry validity</td></tr>
+      </table>
     </div></div>
 
     <div class="vsec"><div class="num">03</div><div>
-      <h3>Architecture: agents over a trust layer</h3>
-      <p>Natural language is mediated by specialised agents sitting on a non-negotiable trust layer.</p>
+      <h3>Architecture</h3>
+      <div class="vlead">Agents over a trust layer. The answer is executed, never improvised.</div>
       <div class="layers full">
-        <div class="layer"><div class="t">Agent layer</div><div class="d">Genome, Pharmacogenomics, Rare Disease, Ancestry, Family, Research, Clinical</div></div>
-        <div class="layer"><div class="t">Trust layer</div><div class="d">Provenance, reproducibility, skill execution, confidence and abstention</div></div>
-        <div class="layer"><div class="t">Knowledge layer</div><div class="d">ClinVar, PharmGKB, CPIC, OMIM, gnomAD, Ensembl, literature</div></div>
-        <div class="layer"><div class="t">Data layer</div><div class="d">VCF, BAM/CRAM, polygenic scores, family pedigrees, EHR</div></div>
+        <div class="layer"><div class="t">Agent</div><div class="d">Genome, PGx, Rare Disease, Ancestry, Family, Research, Clinical</div></div>
+        <div class="layer"><div class="t">Trust</div><div class="d">Provenance, reproducibility, confidence, abstention</div></div>
+        <div class="layer"><div class="t">Knowledge</div><div class="d">ClinVar, PharmGKB, CPIC, OMIM, gnomAD, Ensembl</div></div>
+        <div class="layer"><div class="t">Data</div><div class="d">VCF, BAM/CRAM, polygenic scores, pedigrees, EHR</div></div>
       </div>
-      <p>Answers never originate in a model's free text. A question routes to a skill, the skill executes deterministically over the data and knowledge layers, and the result returns with its evidence and confidence. The demo above is this architecture, running.</p>
+      <div class="flow full">question &#8594; skill &#8594; evidence &#8594; answer</div>
     </div></div>
 
     <div class="vsec"><div class="num">04</div><div>
-      <h3>ClawBio: the execution layer for conversational biology</h3>
-      <p>ClawBio is the open-source framework that executes the skills. Conversational Genome is its flagship application, and the relationship is symbiotic: the application proves the framework at the bar clinical genomics demands, and the framework gives the application reproducibility for free. ClawBio stays open infrastructure so that skills become a shared standard, while the conversational layer is where the network effects compound, every new skill makes every genome more answerable.</p>
+      <h3>ClawBio</h3>
+      <div class="vlead">Open framework, flagship app.</div>
+      <div class="relation full">
+        <div class="rbox"><div class="t">ClawBio</div><div class="d">open execution layer for agentic biology</div></div>
+        <div class="ar">&#8644;</div>
+        <div class="rbox"><div class="t">Conversational Genome</div><div class="d">its flagship application</div></div>
+      </div>
+      <p class="mut" style="font-size:.84rem;margin:.4em 0 0">Every new skill makes every genome more answerable.</p>
     </div></div>
 
     <div class="vsec"><div class="num">05</div><div>
-      <h3>Research agenda: where correctness must live</h3>
-      <p>The first large-scale evidence is already in hand. Across 44,550 scored evaluations over nine frontier models and 110 CPIC cases, accuracy climbed as correctness was constrained, but only executing a versioned skill delivered the clinical-grade guarantees, and retrieval-augmenting a model with the correct guideline actually raised the lethal-class error rate. The five-year programme extends this into longitudinal reinterpretation, human-AI genomic interaction, multi-agent biomedical systems, and population-aware interpretation.</p>
-      <div class="pillrow"><span class="pill">Cell Genomics</span><span class="pill">Nature Genetics</span><span class="pill">Nature Biotechnology</span><span class="pill">Cell</span><span class="pill">Science</span></div>
+      <h3>Research agenda</h3>
+      <div class="vlead">We measured where correctness must live.</div>
+      <div class="tiles full">
+        <div class="tile"><div class="n">44,550</div><div class="l">scored evaluations</div></div>
+        <div class="tile"><div class="n">9</div><div class="l">frontier models</div></div>
+        <div class="tile"><div class="n">110</div><div class="l">CPIC cases</div></div>
+      </div>
+      <div class="pillrow"><span class="pill" style="color:var(--green);border-color:rgba(86,211,100,.4)">only execution delivers the guarantees</span><span class="pill" style="color:var(--red);border-color:rgba(248,81,73,.4)">RAG raised lethal errors</span><span class="pill">Cell Genomics</span><span class="pill">Nature Genetics</span><span class="pill">Science</span></div>
     </div></div>
 
     <div class="vsec"><div class="num">06</div><div>
-      <h3>Equity as architecture, not compliance</h3>
-      <p>The same unguarded pipeline that reaches high accuracy on European genomes degrades sharply on others. On real diplotypes it transferred to 72% in European, 51% in Latin American and 40% in East African individuals. Conversational Genome makes this a first-class output: every answer carries an ancestry-validity flag and exposes the evidence gap instead of hiding it. Quantified uncertainty across ancestries, built into the interface, is how equity becomes a differentiator and a global standard rather than a disclaimer.</p>
+      <h3>Equity, by architecture</h3>
+      <div class="vlead">The same pipeline degrades by ancestry. We show that, we do not hide it.</div>
       <div class="equity-grid full">
         <div class="e"><div class="n green">72%</div><div class="l">European</div></div>
         <div class="e"><div class="n orange">51%</div><div class="l">Latin American</div></div>
         <div class="e"><div class="n red">40%</div><div class="l">East African</div></div>
       </div>
+      <p class="mut" style="font-size:.81rem;margin:.4em 0 0">Real-genome transfer of unguarded interpretation. Every answer carries an ancestry-validity flag.</p>
     </div></div>
 
     <div class="vsec"><div class="num">07</div><div>
-      <h3>Business model: one engine, many surfaces</h3>
-      <p>The same execution engine serves consumers (a lifelong subscription to your own genome), researchers and biobanks (conversational cohorts at population scale), hospitals (point-of-care pharmacogenomics inside the EHR), pharma (trial enrichment and reinterpretation), and public health (equity-aware national programmes). Defensibility is not the model, which commoditises; it is the skill library, the provenance graph, and the trust that compounds as both grow.</p>
+      <h3>One engine, many surfaces</h3>
+      <div class="surface-grid full">
+        <div class="surface"><div class="t">Consumer</div><div class="d">your genome, for life</div></div>
+        <div class="surface"><div class="t">Research, biobanks</div><div class="d">conversational cohorts</div></div>
+        <div class="surface"><div class="t">Hospitals</div><div class="d">PGx in the EHR</div></div>
+        <div class="surface"><div class="t">Pharma</div><div class="d">trials and reinterpretation</div></div>
+        <div class="surface"><div class="t">Public health</div><div class="d">equity-aware programmes</div></div>
+        <div class="surface"><div class="t">The moat</div><div class="d">skills, provenance, trust</div></div>
+      </div>
     </div></div>
 
     <div class="vsec"><div class="num">08</div><div>
-      <h3>Competitive analysis: the conversational wedge</h3>
-      <p>Incumbent clinical platforms are strong at accredited single interpretations and weak at continuity and interaction. Consumer platforms are strong at scale and weak at rigour and trust. General AI assistants are fluent and dangerous, they are precisely the free-prompt condition our benchmark shows fails. The wedge is the combination no incumbent holds: conversational interaction with executed, auditable, ancestry-aware correctness.</p>
+      <h3>The conversational wedge</h3>
+      <table class="cmp full">
+        <tr><th></th><th>Continuity</th><th>Rigour</th><th>Interaction</th><th>Executed</th></tr>
+        <tr><td class="lo">Clinical platforms</td><td class="no">&#10007;</td><td class="ok c">&#10003;</td><td class="no">&#10007;</td><td class="no">&#10007;</td></tr>
+        <tr><td class="lo">Consumer DNA</td><td class="no">&#10007;</td><td class="no">&#10007;</td><td class="no">&#10007;</td><td class="no">&#10007;</td></tr>
+        <tr><td class="lo">General AI</td><td class="ok c">&#10003;</td><td class="no">&#10007;</td><td class="ok c">&#10003;</td><td class="no">&#10007;</td></tr>
+        <tr><td class="ok">Conversational Genome</td><td class="ok c">&#10003;</td><td class="ok c">&#10003;</td><td class="ok c">&#10003;</td><td class="ok c">&#10003;</td></tr>
+      </table>
     </div></div>
 
     <div class="vsec"><div class="num">09</div><div>
-      <h3>Path to category leadership</h3>
-      <p>Lead with the science, set the standard in the open, and let the community build the skills. Publish the benchmark and the architecture, keep ClawBio open so skills converge on a shared contract, define the provenance and reproducibility standard others adopt, and engage regulators early with auditability as the argument. The sequence that wins is evidence first, standard second, ecosystem third.</p>
+      <h3>Path to leadership</h3>
+      <div class="stepper full">
+        <div class="step"><div class="n">01</div><div class="t">Evidence</div><div class="d">publish the benchmark and architecture</div></div>
+        <div class="step"><div class="n">02</div><div class="t">Standard</div><div class="d">open ClawBio, set the provenance contract</div></div>
+        <div class="step"><div class="n">03</div><div class="t">Ecosystem</div><div class="d">the community builds the skills</div></div>
+      </div>
     </div></div>
 
     <div class="vsec"><div class="num">10</div><div>
       <h3>The 2035 vision</h3>
-      <p>A patient asks their genome whether a new prescription is safe and gets a grounded answer before leaving the pharmacy. A clinician opens the conversational genome inside the EHR and sees the one pharmacogenomic flag that matters, with its evidence. A researcher interrogates a biobank by conversation instead of by query language. A regulator audits not a black box but a reproducible trace. The genome has stopped being a file you store and become a companion you consult, for life.</p>
+      <div class="vignettes full">
+        <div class="vig"><div class="who">Patient</div><p>Asks if a new prescription is safe, before leaving the pharmacy.</p></div>
+        <div class="vig"><div class="who">Clinician</div><p>Sees the one PGx flag that matters, in the EHR, with its evidence.</p></div>
+        <div class="vig"><div class="who">Researcher</div><p>Interrogates a biobank by conversation, not query language.</p></div>
+        <div class="vig"><div class="who">Regulator</div><p>Audits a reproducible trace, not a black box.</p></div>
+      </div>
     </div></div>
   </div>
 </section>
