@@ -301,8 +301,33 @@ code { font-family: 'SF Mono', 'Fira Code', monospace; color: #56d364; backgroun
 <section class="slide">
     <div class="section-label">Experimental design</div>
     <h2>The first large-scale test of <span class="green">where trust must live</span></h2>
-    <img src="figures/design-workflow.svg" alt="Study design workflow: scale (110 CPIC cases x 9 LLMs x 3 ancestries x 3 replicates = 44,550 evaluations); the five-condition constraint gradient from free-prompted to answer-supplied; and two validation arms, curated benchmark to real-genome validation showing 72/51/40 percent by ancestry" style="display:block; margin:0.4rem auto; width:auto; max-width:97%; max-height:66vh;">
-    <div class="fig-caption"><span class="green">44,550 scored evaluations</span> &middot; 9 frontier LLMs &middot; 110 CPIC Level A cases &middot; real genomes from 3 ancestries. A five-condition gradient moving correctness out of the stochastic model and into an executed, versioned skill. <span class="muted">Corpas, Iacoangeli, Bourdenx, Aldraimli, Skene, Fatumo, Guio. bioRxiv 2026.</span></div>
+
+    <div style="display:flex; align-items:center; justify-content:center; gap:0.9vw; margin-top:1.4rem; flex-wrap:wrap;">
+        <div style="text-align:center;"><div style="font-size:clamp(1.6rem,3vw,2.6rem); font-weight:800; color:#58a6ff;">110</div><div style="font-size:clamp(0.7rem,1vw,0.9rem); color:#adbac7;">CPIC cases</div></div>
+        <div style="font-size:clamp(1.2rem,2vw,1.8rem); color:#6e7681;">&times;</div>
+        <div style="text-align:center;"><div style="font-size:clamp(1.6rem,3vw,2.6rem); font-weight:800; color:#58a6ff;">9</div><div style="font-size:clamp(0.7rem,1vw,0.9rem); color:#adbac7;">frontier LLMs</div></div>
+        <div style="font-size:clamp(1.2rem,2vw,1.8rem); color:#6e7681;">&times;</div>
+        <div style="text-align:center;"><div style="font-size:clamp(1.6rem,3vw,2.6rem); font-weight:800; color:#58a6ff;">3</div><div style="font-size:clamp(0.7rem,1vw,0.9rem); color:#adbac7;">ancestries</div></div>
+        <div style="font-size:clamp(1.2rem,2vw,1.8rem); color:#6e7681;">&times;</div>
+        <div style="text-align:center;"><div style="font-size:clamp(1.6rem,3vw,2.6rem); font-weight:800; color:#58a6ff;">3</div><div style="font-size:clamp(0.7rem,1vw,0.9rem); color:#adbac7;">replicates</div></div>
+        <div style="font-size:clamp(1.2rem,2vw,1.8rem); color:#6e7681;">=</div>
+        <div style="text-align:center; background:rgba(86,211,100,0.08); border:1.5px solid #56d364; border-radius:12px; padding:0.5em 1.1em;"><div style="font-size:clamp(1.8rem,3.4vw,3rem); font-weight:800; color:#56d364;">44,550</div><div style="font-size:clamp(0.7rem,1vw,0.9rem); color:#adbac7;">scored evaluations</div></div>
+    </div>
+
+    <div style="display:flex; align-items:center; justify-content:center; gap:1.2vw; margin-top:2.4rem; width:90%; max-width:1050px;">
+        <div style="flex:1; text-align:center; background:#161b22; border-top:3px solid #ffa198; border-radius:8px; padding:1em 1.2em;">
+            <div style="color:#ffa198; font-weight:700; font-size:clamp(1rem,1.6vw,1.35rem);">The model reasons</div>
+            <div style="color:#6e7681; font-size:clamp(0.8rem,1.1vw,1rem); margin-top:0.3em;">stochastic &middot; unauditable</div>
+        </div>
+        <div style="font-size:clamp(1.4rem,2.4vw,2.2rem); color:#56d364;">&rarr;</div>
+        <div style="flex:1; text-align:center; background:#161b22; border-top:3px solid #56d364; border-radius:8px; padding:1em 1.2em;">
+            <div style="color:#56d364; font-weight:700; font-size:clamp(1rem,1.6vw,1.35rem);">The skill executes</div>
+            <div style="color:#6e7681; font-size:clamp(0.8rem,1.1vw,1rem); margin-top:0.3em;">deterministic &middot; auditable</div>
+        </div>
+    </div>
+
+    <p class="gap center" style="max-width:82%; margin-top:1.8rem; font-size:clamp(1rem,1.6vw,1.35rem);">One question across every condition: <span class="green">where does correctness have to live?</span></p>
+    <div class="fig-caption"><span class="muted">Corpas, Iacoangeli, Bourdenx, Aldraimli, Skene, Fatumo, Guio. bioRxiv 2026.</span></div>
 </section>
 
 <!-- BENCHMARK: RESULT (architectural) -->
